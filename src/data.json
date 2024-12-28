@@ -3,14 +3,14 @@
     "intro": "Hey👋, Myself Priyanshu",
     "title": "Software Engineer",
     "stack": "NestJs | ReactJs | React-Query | NodeJs | ExpressJs | MongoDB | PostgreSQL | Jest",
-    "description": "As a software engineer at @Contentstack, I specialize in developing automation workflows and crafting full-stack, cloud-native solutions such as ColComm and Serverless Medium. I leverage a robust skill set in backend architecture using NestJs/ExpressJs. I enjoy experimenting with innovative tools and methodologies, from microservices with Hono to testing with Jest and Playwright.",
+    "description": "I am a Software Engineer with track record of designing and implementing scalable, efficient, and user-centric solutions. With hands-on experience in NestJS, React.js, and modern development practices like Test-Driven Development (TDD), I excel in building robust backend systems, intuitive front-end interfaces, and efficient automation workflows. Let’s connect to discuss technology, collaboration, or exciting opportunities in software development!",
     "resume": "https://drive.google.com/file/d/1Vlb8oohrNEDrbQFqblzkTUq2Xm3jhVaJ/view?usp=drive_link"
   },
   "Projects": [
     {
       "image": "./colcomm.jpg",
       "name": "ColComm",
-      "description": "Built a web application to address the problem of students struggling to find guidance from experienced individuals. To maintain the harmony and peace in the chat ML model is included to filter out the hate and abusive texts.",
+      "description": "Created a chat platform to connect mentees and mentors based on specific fields of expertise and skills. Implemented AI-based content moderation by using FastText with Random Forest algorithms to filter out hate speech and abusive content, achieving 94% accuracy.",
       "tags": [
         "ReactJs",
         "NodeJs",
@@ -20,13 +20,13 @@
         "FullStack",
         "Machine Learning"
       ],
-      "github": "https://github.com/itsaslowball/ColComm",
+      "github": "https://github.com/priyanshu-34/ColComm",
       "demo": "https://colcomm.onrender.com/"
     },
     {
       "image": "./hotel.png",
       "name": "Hotels.com",
-      "description": "Developed a hotel booking platform using NestJs and React. Users can search, book, list, and update hotels, and view past reservations. Integrated Stripe for payments. React Query is utilized for efficient data fetching, mutation, and caching.",
+      "description": "Built a scalable hotel booking platform using NestJS, enabling users to search hotels by location, book rooms, list hotels, and update property details. Optimized backend APIs for handling complex queries by using asynchronous processing, indexing, and optimized database queries, ensuring efficient data retrieval and smooth performance even under high traffic loads.",
       "tags": [
         "NestJs",
         "ReactJs",
@@ -35,7 +35,7 @@
         "React Query",
         "Cloudinary"
       ],
-      "github": "https://github.com/itsaslowball/Hotel-Booking",
+      "github": "https://github.com/priyanshu-34/Hotel-Booking",
       "demo": "https://hotel-booking-uvov.onrender.com"
     },
     {
@@ -55,7 +55,7 @@
         "ReactJs",
         "Reacct Query"
       ],
-      "github": "https://github.com/itsaslowball/Medium-serverless",
+      "github": "https://github.com/priyanshu-34/Medium-serverless",
       "demo": "https://medium-serverless.onrender.com/"
     },
     {
@@ -72,29 +72,16 @@
   ],
 "Skills": [
   {
-    "title": "Backend Development",
+    "title": "Frameworks & Libraries",
     "skills": [
-      "microservices",
       "NestJs",
-      "NodeJs",
-      "ExpressJs",
-      "HONO",
-      "Serverless",
-      "Cloudflare Workers",
+      "Node.js",
+      "Express.js",
+      "React.js",
+      "Redux",
+      "React Query",
       "Redis",
       "GRPC"
-    ]
-  },
-  {
-    "title": "Frontend Development",
-    "skills": [
-      "ReactJs",
-      "React-Query",
-      "NextJs",
-      "Tailwind-CSS",
-      "Bootstrap",
-      "HTML",
-      "CSS"
     ]
   },
   {
@@ -103,14 +90,12 @@
       "JavaScript",
       "TypeScript",
       "Golang",
-      "C",
       "C++",
-      "Python (basic)",
-      "C# (basic)"
+      "SQL (PostgreSQL)"
     ]
   },
   {
-    "title": "Database Management",
+    "title": "Databases & ORMs",
     "skills": [
       "MongoDB",
       "PostgreSQL",
@@ -120,23 +105,13 @@
     ]
   },
   {
-    "title": "APIs & Protocols",
-    "skills": [
-      "REST",
-      "GraphQL",
-      "GRPC"
-    ]
-  },
-  {
-    "title": "Others",
+    "title": "Tools & Technologies",
     "skills": [
       "Git",
       "Jest",
       "Playwright",
-            "Data Structures",
-            "DBMS",
-            "Operating System",
-            "OOPS"
+      "Docker",
+      "Postman"
     ]
   }
 ],
@@ -148,23 +123,23 @@
       "company": "Contentstack",
       "designation": "Associate Software Engineer",
       "description": [
-        "Developed several triggers and actions for automation workflows which are used by the customers to automate their workflows.",
-        "Created template actions using handlebar"
+        "Resolved numerous bugs and customer issues, decreasing support tickets by 40% and significantly improving customer satisfaction.",
+        "Introduced Time-To-Live (TTL) functionality in the database schema and automated the deletion of expired data using a cron job script with BullMQ, reducing database size by 7.3%.",
+        "Enhanced the reliability of automation workflows by integrating retry mechanisms, reducing average incident resolution time by 30% during high-traffic hours.",
+        "Developed and optimized multiple RESTful APIs adhering to Test-Driven Development (TDD) principles, improving code quality and reducing bugs in production.",
+        "Engineered a robust entry translation functionality for multilingual content, enabling translation into any desired language while effectively handling edge cases.",
+        "Designed and implemented a UI skeleton and chat interface for AI agents, integrating state management techniques to handle dynamic interactions and complex workflows."
       ],
       "techStack": [
         "NestJs",
-        "ReactJs",
-        "React-Query",
-        "NextJs",
-        "NodeJs",
-        "Handlebars",
-        "Git",
-        "Docker",
+        "Redis",
+        "React.js",
+        "Redux",
+        "Node.js,",
         "Playwright",
         "Jest",
-        "Typescript",
-        "Javascript",
-        "Golang"
+        "TypeScript",
+        "JavaScript"
       ],
       "jobLocation": "Bengaluru"
     },
@@ -196,19 +171,6 @@
         "Golang"
       ],
       "jobLocation": "Bengaluru"
-    },
-    {
-      "startDate": "04-01-2022 - 10-07-2024",
-      "start": "04-01-2022",
-      "end": "10-07-2024",
-      "company": "CSI-JSSSTU",
-      "designation": "General Secretary",
-      "description": [
-        "Conducted Workshops for Javascript and React",
-        "Managed day to day activities of CSI",
-        "Conducted annual technical fest Technologix"
-      ],
-      "jobLocation": "Mysuru"
     }
   ],
   "Education": [
@@ -218,20 +180,6 @@
       "degree": "B.E in Information Science and Engineering",
       "location": "Mysuru, Karnataka",
       "marks": "9.01 CGPA"
-    },
-    {
-      "startDate": "2017 - 2019",
-      "institute": "St Josheph's Senior Secondary School",
-      "degree": "Intermediate",
-      "location": "Muzzafarpur, Bihar",
-      "marks": "78%"
-    },
-    {
-      "startDate": "2012 - 2017",
-      "institute": "St. Xavier's Higher Secondary School",
-      "degree": "Matriculation",
-      "location": "Bettiah, Bihar",
-      "marks": "10 CGPA"
     }
   ]
 }
