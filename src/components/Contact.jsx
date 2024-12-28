@@ -107,7 +107,7 @@ export const Contact = () => {
             <ul>
               <li>
                 <a
-                  href="https://www.linkedin.com/in/itsaslowball/"
+                  href="https://www.linkedin.com/in/priyans34/"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ color: "#0C6DFD" }}
@@ -117,7 +117,7 @@ export const Contact = () => {
               </li>
               <li>
                 <a
-                  href="https://github.com/itsaslowball"
+                  href="https://github.com/priyanshu-34"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -126,7 +126,7 @@ export const Contact = () => {
               </li>
               <li>
                 <a
-                  href="https://leetcode.com/u/itsaslowball_leetcode/"
+                  href="https://leetcode.com/u/priyans34/"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ color: "#cc7e3f" }}
