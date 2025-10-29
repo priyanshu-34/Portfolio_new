@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import './Navbar.css'; // Create a separate CSS file for styles
+import React, { useState } from "react";
+import "./Navbar.css"; // Create a separate CSS file for styles
 
 export const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -27,11 +27,7 @@ export const Navbar = () => {
             <a href="#Skills">Skills</a>
           </li>
           <li>
-            <a
-              href="#Experiences"
-            >
-              Work
-            </a>
+            <a href="#Experiences">Work</a>
           </li>
           <li>
             <a href="#Contact">Contact</a>
@@ -47,5 +43,3 @@ export const Navbar = () => {
     </div>
   );
 };
-
-

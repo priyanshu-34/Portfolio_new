@@ -23,20 +23,17 @@ export function calculateDuration(startDate, endDate) {
 
   // Calculate total months
   const totalMonths = years * 12 + months;
-    years= Math.floor(totalMonths / 12)
+  years = Math.floor(totalMonths / 12);
   months = totalMonths % 12;
   let time = ``;
 
-  if (years === 0 && months !==0) {
-    time = `${months} months`
-  }
-  else if(months === 0 && years !==0) {
-    time = `${years} years`
-  }
-  else if (months === 0 && years === 0) {
+  if (years === 0 && months !== 0) {
+    time = `${months} months`;
+  } else if (months === 0 && years !== 0) {
+    time = `${years} years`;
+  } else if (months === 0 && years === 0) {
     time = `1 month`;
-  }
-  else if (months !== 0 && years !== 0) {
+  } else if (months !== 0 && years !== 0) {
     time = `${years} years ${months} months`;
   }
 
@@ -108,7 +105,7 @@ export const WorkTimeline = () => {
               </h5>
               <h5 className="vertical-timeline-element-subtitle"></h5>
 
-              <div style={{maxHeight:"15rem", overflow:"scroll"}}>
+              <div style={{ maxHeight: "15rem", overflow: "scroll" }}>
                 {exp.description && (
                   <p>
                     <ul>

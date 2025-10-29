@@ -10,7 +10,8 @@
         margin-bottom: 4vh;
         margin-top: 10vh;
 }
-.contact-box{
+
+.contact-box {
         height: auto;
         width: 95%;
 
@@ -23,72 +24,77 @@
         margin-top: 5vh;
 }
 
-.inner-box{
+.inner-box {
         width: 60%;
 }
 
-.whatsapp{
+.whatsapp {
         margin-top: 5vh;
         margin-bottom: 5vh;
         display: flex;
         justify-content: space-evenly;
 }
-.email{
+
+.email {
         height: 6vh;
         width: 21vh;
 }
-.whats{
+
+.whats {
         height: 6vh;
         width: 22vh;
 }
 
-.form{
+.form {
         display: flex;
         flex-direction: column;
-        gap:3vh;
+        gap: 3vh;
 }
-input{
+
+input {
         border-width: 1px;
         border-color: #8A898E;
         border-radius: 10px;
         height: 5vh;
-        background-color:#1C1B23;
-        color: #8A898E; 
-        padding:15px
+        background-color: #1C1B23;
+        color: #8A898E;
+        padding: 15px
 }
 
-.message-input{
+.message-input {
         border-width: 2px;
         border-radius: 10px;
-        background-color:#1C1B23   ;
-        color: #8A898E; 
+        background-color: #1C1B23;
+        color: #8A898E;
         padding: 2vh;
         height: 40vh;
 }
 
-.socials{
+.socials {
         margin-top: 10vh;
         margin-bottom: 10vh;
-        
+
 }
-.socials ul{
+
+.socials ul {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-evenly;
         list-style: none;
 }
 
-li a{
+li a {
         text-decoration: none;
-        color:#8A898E;
-        font-size:x-large;
+        color: #8A898E;
+        font-size: x-large;
 }
 
-@media (max-width: 768px){
-        .inner-box{
-                width:90%;
+@media (max-width: 768px) {
+        .inner-box {
+                width: 90%;
         }
-        .socials{
+
+        .socials {
                 margin-right: 5vh;
         }
 }

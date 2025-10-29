@@ -1,5 +1,3 @@
-
-
 .container {
         margin-top: 10vh;
         display: flex;
@@ -80,13 +78,14 @@
         justify-content: center;
         align-items: center;
         margin-left: -10vh;
-transition: transform 0.3s ease-in-out;
+        transition: transform 0.3s ease-in-out;
 }
-  .info-div3:hover {
-          transform: scale(1.19);
-          border-color: green;
-          background-color: rgb(7, 58, 7);
-  }
+
+.info-div3:hover {
+        transform: scale(1.19);
+        border-color: green;
+        background-color: rgb(7, 58, 7);
+}
 
 @media only screen and (min-width: 1200px) {
         .container {
@@ -96,7 +95,7 @@ transition: transform 0.3s ease-in-out;
                 margin-left: 0px;
                 padding-left: 0px;
         }
-        
+
         .profile-picture img {
                 object-fit: cover;
                 width: 60vh;
@@ -105,7 +104,7 @@ transition: transform 0.3s ease-in-out;
                 margin-left: 22vh;
                 margin-top: 2vh;
         }
-        
+
         .info {
                 color: white;
                 margin-left: 20vh;
@@ -114,13 +113,13 @@ transition: transform 0.3s ease-in-out;
                 justify-content: space-evenly;
                 gap: 3vh;
         }
-        
+
         .info-div1 {
                 background-color: #1C1B23;
                 font-size: xx-large;
                 border: 0.5px solid #3498db;
                 border-radius: 10px;
-        
+
                 height: auto;
                 width: 60vh;
                 text-align: center;
@@ -129,9 +128,9 @@ transition: transform 0.3s ease-in-out;
                 justify-content: center;
                 align-items: center;
                 margin-left: -10vh;
-        
+
         }
-        
+
         .info-div2 {
                 background-color: #1C1B23;
                 border: 0.5px solid #db343f;
@@ -143,7 +142,7 @@ transition: transform 0.3s ease-in-out;
                 padding: 1vh;
                 /* margin-right: 10px; */
         }
-        
+
         .info-div2 .title {
                 font-size: 25px;
                 text-align: center;
@@ -152,30 +151,30 @@ transition: transform 0.3s ease-in-out;
                 /* This property helps avoid the underline being too close to the text */
                 text-underline-offset: 8px;
         }
-        
+
         .info-div2 .description {
                 font-size: 15px;
                 text-align: center;
                 color: #8B8A90;
         }
-        
+
         .info-div3 {
                 background-color: #1C1B23;
                 font-size: 2px;
 
                 height: 7vh;
                 width: 30vh;
-        
+
                 text-align: center;
 
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 margin-left: -10vh;
-        
+
         }
-                              
-                                
+
+
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1199px) {
@@ -249,7 +248,7 @@ transition: transform 0.3s ease-in-out;
         .profile-picture {
                 display: flex;
                 align-items: center;
-                justify-content: center;        
+                justify-content: center;
         }
 
         .profile-picture img {
@@ -297,8 +296,4 @@ transition: transform 0.3s ease-in-out;
                 margin-top: 1vh;
         }
 }
-
-
-
-
 /* @media (max-width: ) */

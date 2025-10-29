@@ -1,9 +1,10 @@
-.skills{
+.skills {
         margin-top: 10vh;
         margin-left: 2vh;
-        margin-right:2vh
+        margin-right: 2vh
 }
-.skillcard{
+
+.skillcard {
         width: 30vh;
         height: auto;
         background-color: #1C1B23;
@@ -13,25 +14,27 @@
         transition: transform 0.3s ease-in-out;
 }
 
-@media (max-width: 786px){
+@media (max-width: 786px) {
         .skills {
-                        margin-top: 10vh;
-                }
-        .skillcard{
+                margin-top: 10vh;
+        }
+
+        .skillcard {
                 width: 40vh;
         }
 }
 
-.skillcard:hover{
+.skillcard:hover {
         border-width: 0.5px;
         border-right-color: #5aabe0;
         border-left-color: red;
         border-top-color: wheat;
         border-bottom-color: green;
         border-style: solid;
-        box-shadow:0px 10px 20px rgb(66, 66, 66);
+        box-shadow: 0px 10px 20px rgb(66, 66, 66);
         transform: scale(1.1);
 }
+
 .skill-tag {
         height: auto;
         width: auto;
@@ -45,7 +48,7 @@
 }
 
 .skill-tag:hover {
-        box-shadow:0px 10px 20px rgb(66, 66, 66);
+        box-shadow: 0px 10px 20px rgb(66, 66, 66);
 }
 
 .title {

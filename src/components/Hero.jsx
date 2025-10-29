@@ -1,6 +1,6 @@
 import React from "react";
 import "./Hero.css";
-import data from  '../data.json'
+import data from "../data.json";
 
 export const Hero = () => {
   const heroData = data.Hero;

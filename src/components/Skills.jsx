@@ -1,8 +1,7 @@
 import React from "react";
 import "./Skills.css";
 import { SkillCard } from "./SkillCard";
-import data from '../data.json'
-
+import data from "../data.json";
 
 export const Skills = () => {
   const skillData = data.Skills;
@@ -26,14 +25,9 @@ export const Skills = () => {
           // gap: "0.625 rem",
         }}
       >
-        {
-          skillData.map((skill) => {
-            return <SkillCard
-              title={skill.title}
-              skills={skill.skills}
-            />;
-          })
-        }
+        {skillData.map((skill) => {
+          return <SkillCard title={skill.title} skills={skill.skills} />;
+        })}
       </div>
     </div>
   );

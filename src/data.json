@@ -2,11 +2,42 @@
   "Hero": {
     "intro": "Hey👋, Myself Priyanshu",
     "title": "Software Engineer",
-    "stack": "NestJs | ReactJs | React-Query | NodeJs | ExpressJs | MongoDB | PostgreSQL | Jest",
-    "description": "I am a Software Engineer with track record of designing and implementing scalable, efficient, and user-centric solutions. With hands-on experience in NestJS, React.js, and modern development practices like Test-Driven Development (TDD), I excel in building robust backend systems, intuitive front-end interfaces, and efficient automation workflows. Let’s connect to discuss technology, collaboration, or exciting opportunities in software development!",
+    "stack": "NestJS | Node.js | React.js | TypeScript | Redis | MongoDB | PostgreSQL | Jest",
+    "description": "I am a Software Engineer with a track record of designing and implementing scalable, efficient, and user-centric solutions. With hands-on experience in NestJS, React.js, and modern development practices, I excel in building robust backend systems, microservices architectures, and efficient automation workflows. Experienced in distributed systems, event-driven architectures, and AI agent frameworks. Let's connect to discuss technology, collaboration, or exciting opportunities in software development!",
     "resume": "https://drive.google.com/file/d/1Vlb8oohrNEDrbQFqblzkTUq2Xm3jhVaJ/view?usp=drive_link"
   },
   "Projects": [
+    {
+      "image": "",
+      "name": "Developer's Marketplace",
+      "description": "Architected a microservices, event-driven marketplace supporting escrow, milestone payments, and role-based access control. Uses Kafka for async workflows and gRPC for service-to-service calls. Developed a real-time notification system using Redis, WebSockets, and BullMQ for bid updates and order events.",
+      "tags": [
+        "NestJS",
+        "Kafka",
+        "gRPC",
+        "Redis",
+        "React.js",
+        "MongoDB",
+        "Stripe"
+      ],
+      "github": "https://github.com/priyanshu-34/Marketplace",
+      "demo": ""
+    },
+    {
+      "image": "./hotel.png",
+      "name": "Hotel.com",
+      "description": "Built a hotel booking system with advanced search and booking flows, integrating Stripe for secure payments and Cloudinary for media management. Optimized backend APIs through asynchronous data processing, indexing, and query optimization, ensuring consistent performance under heavy traffic.",
+      "tags": [
+        "NestJS",
+        "React.js",
+        "React-Query",
+        "MongoDB",
+        "Cloudinary",
+        "Stripe"
+      ],
+      "github": "https://github.com/priyanshu-34/Hotel-Booking",
+      "demo": "https://hotel-booking-uvov.onrender.com"
+    },
     {
       "image": "./colcomm.jpg",
       "name": "ColComm",
@@ -24,21 +55,6 @@
       "demo": "https://colcomm.onrender.com/"
     },
     {
-      "image": "./hotel.png",
-      "name": "Hotels.com",
-      "description": "Built a scalable hotel booking platform using NestJS, enabling users to search hotels by location, book rooms, list hotels, and update property details. Optimized backend APIs for handling complex queries by using asynchronous processing, indexing, and optimized database queries, ensuring efficient data retrieval and smooth performance even under high traffic loads.",
-      "tags": [
-        "NestJs",
-        "ReactJs",
-        "MongoDB",
-        "Stripe",
-        "React Query",
-        "Cloudinary"
-      ],
-      "github": "https://github.com/priyanshu-34/Hotel-Booking",
-      "demo": "https://hotel-booking-uvov.onrender.com"
-    },
-    {
       "image": "./medium.png",
       "name": "Serverless Medium",
       "description": "Built a serverless blogging platform using Cloudflare Workers and Hono for scalability. Utilized Prisma ORM with Prisma Accelerate for efficient connection pooling. Enabled type-safe data sharing via an NPM package. Implemented secure authentication with access and refresh tokens and used Zod for data validation.",
@@ -53,7 +69,7 @@
         "TypeScript",
         "NPM",
         "ReactJs",
-        "Reacct Query"
+        "React Query"
       ],
       "github": "https://github.com/priyanshu-34/Medium-serverless",
       "demo": "https://medium-serverless.onrender.com/"
@@ -61,7 +77,7 @@
     {
       "image": "./impact.png",
       "name": "ImpactNGO",
-      "description": "Built a web application to address the problem of people and restaurents and other stores who have leftover or extra food, clothes or other ",
+      "description": "Built a web application to address the problem of people and restaurants and other stores who have leftover or extra food, clothes or other items, connecting them with NGOs who can distribute these resources to those in need.",
       "tags": [
         "ReactJs",
         "Firebase"
@@ -70,115 +86,116 @@
       "demo": "https://impact-c3d0d.web.app/"
     }
   ],
-"Skills": [
-  {
-    "title": "Frameworks & Libraries",
-    "skills": [
-      "NestJs",
-      "Node.js",
-      "Express.js",
-      "React.js",
-      "Redux",
-      "React Query",
-      "Redis",
-      "GRPC"
-    ]
-  },
-  {
-    "title": "Programming Languages",
-    "skills": [
-      "JavaScript",
-      "TypeScript",
-      "Golang",
-      "C++",
-      "SQL (PostgreSQL)"
-    ]
-  },
-  {
-    "title": "Databases & ORMs",
-    "skills": [
-      "MongoDB",
-      "PostgreSQL",
-      "MySQL",
-      "Prisma",
-      "Mongoose"
-    ]
-  },
-  {
-    "title": "Tools & Technologies",
-    "skills": [
-      "Git",
-      "Jest",
-      "Playwright",
-      "Docker",
-      "Postman"
-    ]
-  }
-],
+  "Skills": [
+    {
+      "title": "Languages",
+      "skills": [
+        "JavaScript",
+        "TypeScript",
+        "Go (basic)"
+      ]
+    },
+    {
+      "title": "Frameworks & Libraries",
+      "skills": [
+        "Node.js",
+        "NestJS",
+        "Express.js",
+        "React.js",
+        "Redux",
+        "React Query"
+      ]
+    },
+    {
+      "title": "Databases & ORMs",
+      "skills": [
+        "MongoDB",
+        "PostgreSQL",
+        "Prisma",
+        "Mongoose"
+      ]
+    },
+    {
+      "title": "Systems & Tools",
+      "skills": [
+        "Docker",
+        "Kafka",
+        "Redis",
+        "BullMQ",
+        "Jest",
+        "Playwright",
+        "JMeter",
+        "Postman",
+        "Git"
+      ]
+    },
+    {
+      "title": "Cloud & Infrastructure",
+      "skills": [
+        "AWS (S3, EC2)",
+        "Microservices Architecture"
+      ]
+    }
+  ],
   "WorkExperience": [
     {
-      "startDate": "22-07-2024 - present",
-      "start": "22-07-2024",
+      "startDate": "July 2024 – Present",
+      "start": "01-07-2024",
       "end": "",
       "company": "Contentstack",
       "designation": "Associate Software Engineer",
       "description": [
-        "Resolved numerous bugs and customer issues, decreasing support tickets by 40% and significantly improving customer satisfaction.",
-        "Introduced Time-To-Live (TTL) functionality in the database schema and automated the deletion of expired data using a cron job script with BullMQ, reducing database size by 7.3%.",
-        "Enhanced the reliability of automation workflows by integrating retry mechanisms, reducing average incident resolution time by 30% during high-traffic hours.",
-        "Developed and optimized multiple RESTful APIs adhering to Test-Driven Development (TDD) principles, improving code quality and reducing bugs in production.",
-        "Engineered a robust entry translation functionality for multilingual content, enabling translation into any desired language while effectively handling edge cases.",
-        "Designed and implemented a UI skeleton and chat interface for AI agents, integrating state management techniques to handle dynamic interactions and complex workflows."
+        "Redesigned authentication flow and implemented two-layer caching in Automation Execution framework, removing cross-service dependency and improving execution speed by 22.2%.",
+        "Designed a distributed Stop Agent Execution system using Redis Pub/Sub for cross-pod signaling, enabling unified cancellation for nested agents and preventing orphaned jobs.",
+        "Refactored the Queue Service into an independent microservice, enforcing separation of concerns, improving resource isolation, and enabling horizontal scalability across automation workloads.",
+        "Converted blocking components to asynchronous and event-driven workflows, reducing latency by 35% and supporting 2.5× higher concurrency under load.",
+        "Contributed to the development of the AI Agent Framework, enabling users to create and trigger custom agents manually or via webhooks.",
+        "Built the Model Context Protocol (MCP) server, integrating CMS APIs with BrandKit AI to enable LLM-optimized contextual interactions.",
+        "Implemented retry mechanisms for failed automations, improving fault tolerance and reducing incident resolution time by 30%."
       ],
       "techStack": [
-        "NestJs",
+        "NestJS",
+        "Node.js",
         "Redis",
         "React.js",
-        "Redux",
-        "Node.js,",
+        "TypeScript",
+        "Jest",
+        "MongoDB",
+        "Docker",
+        "AI Agents"
+      ],
+      "jobLocation": "Bengaluru, India"
+    },
+    {
+      "startDate": "Jan 2024 – July 2024",
+      "start": "01-01-2024",
+      "end": "01-07-2024",
+      "company": "Contentstack",
+      "designation": "Associate Software Engineer Intern",
+      "description": [
+        "Developed triggers and actions for automation workflows, improving operational efficiency by reducing manual tasks.",
+        "Implemented robust server-side validations, strengthening application security and minimizing support escalations.",
+        "Created comprehensive unit and end-to-end tests using Jest and Playwright, increasing test coverage by 24%."
+      ],
+      "techStack": [
+        "NestJS",
+        "React.js",
+        "React Query",
+        "Node.js",
         "Playwright",
         "Jest",
         "TypeScript",
         "JavaScript"
       ],
-      "jobLocation": "Bengaluru"
-    },
-    {
-      "startDate": "04-01-2024 - 21-07-2024",
-      "start": "04-01-2024",
-      "end": "21-07-2024",
-      "company": "Contentstack",
-      "designation": "Associate Software Engineer Intern",
-      "description": [
-        "Developed several triggers and actions for automation workflows which are used by the customers to automate their workflows.",
-        "Implemented server-side validations for users and inputs to enhance security and prevent escalations.",
-        "Implemented publish/unpublish functionalities in the workflow. So that user can publish or unpublish any component from the workflow at any given time without deleting the component from the workflow.",
-        "Create tests for the implemented features using Jest and Playwright",
-        "Collaborated in a team to develop TechX, the company's internal website."
-      ],
-      "techStack": [
-        "NestJs",
-        "ReactJs",
-        "React-Query",
-        "NextJs",
-        "NodeJs",
-        "Git",
-        "Docker",
-        "Playwright",
-        "Jest",
-        "Typescript",
-        "Javascript",
-        "Golang"
-      ],
-      "jobLocation": "Bengaluru"
+      "jobLocation": "Bengaluru, India"
     }
   ],
   "Education": [
     {
-      "startDate": "2020 - 2024",
-      "institute": "JSS Science And Technology University",
-      "degree": "B.E in Information Science and Engineering",
-      "location": "Mysuru, Karnataka",
+      "startDate": "Aug. 2020 – May 2024",
+      "institute": "JSS Science and Technology University",
+      "degree": "Bachelor of Engineering",
+      "location": "Mysuru, India",
       "marks": "9.01 CGPA"
     }
   ]
