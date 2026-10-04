@@ -56,3 +56,10 @@
 .next-card { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; padding: 40px; background: var(--c-primary-tint); color: var(--c-text); }
 .next-card:hover { color: var(--c-text); }
 .round-arrow { width: 52px; height: 52px; border-radius: 999px; background: var(--c-primary); color: #fff; display: flex; align-items: center; justify-content: center; }
+
+.results { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); border: 1px solid var(--c-border); border-radius: var(--r-lg); overflow: hidden; }
+.results__cell { padding: 24px; display: flex; flex-direction: column; gap: 6px; border-right: 1px solid var(--c-border); }
+.results__cell:last-child { border-right: 0; }
+.results__value { font-size: 36px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; color: var(--c-primary-deep); }
+.results__label { font-size: 14px; color: var(--c-text-2); }
+@media (max-width: 640px) { .results__cell { border-right: 0; border-bottom: 1px solid var(--c-border); } .results__cell:last-child { border-bottom: 0; } .results__value { font-size: 28px; } }

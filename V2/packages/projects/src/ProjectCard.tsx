@@ -2,13 +2,15 @@ import type { Project } from '@pf/core';
 import { ExternalLink, Icon, SiteLink, Tags } from '@pf/ui';
 import './projects.css';
 
-function StackDiagram({ tags, compact }: { tags: string[]; compact?: boolean }) {
-  const [core, ...rest] = tags;
+function StackDiagram({ project, compact }: { project: Project; compact?: boolean }) {
+  const { tags, visual } = project;
+  const core = visual?.core ?? `${tags[0]}${tags.includes('gRPC') ? ' · gRPC' : ''}`;
+  const items = visual?.items ?? tags.slice(1).filter((t) => t !== 'gRPC');
   return (
     <div className="stack-diagram" aria-hidden="true">
-      <div className="stack-diagram__box stack-diagram__box--core">{core}{tags.includes('gRPC') ? ' · gRPC' : ''}</div>
+      <div className="stack-diagram__box stack-diagram__box--core">{core}</div>
       <div className="stack-diagram__row">
-        {rest.filter((t) => t !== 'gRPC').slice(0, compact ? 3 : 4).map((t) => (
+        {items.slice(0, compact ? 3 : 4).map((t) => (
           <span key={t} className="stack-diagram__box">{t}</span>
         ))}
       </div>
@@ -22,7 +24,7 @@ export function ProjectCard({ project, showBadge }: { project: Project; showBadg
       {project.image ? (
         <img className="project-card__img" src={project.image} alt={`${project.name} screenshot`} loading="lazy" />
       ) : (
-        <div className="project-card__placeholder"><StackDiagram tags={project.tags} compact /></div>
+        <div className="project-card__placeholder"><StackDiagram project={project} compact /></div>
       )}
       <div className="project-card__body">
         {showBadge && (project.featured || project.caseStudy) && (
@@ -41,6 +43,9 @@ export function ProjectCard({ project, showBadge }: { project: Project; showBadg
           {project.demo && (
             <ExternalLink href={project.demo}>Live demo <Icon name="external" size={14} /></ExternalLink>
           )}
+          {project.npm && (
+            <ExternalLink href={project.npm}>npm <Icon name="external" size={14} /></ExternalLink>
+          )}
           {project.github && (
             <ExternalLink href={project.github} className="secondary">Source <Icon name="external" size={14} /></ExternalLink>
           )}
@@ -57,7 +62,7 @@ export function FeaturedProject({ project }: { project: Project }) {
         {project.image ? (
           <img src={project.image} alt={`${project.name} screenshot`} style={{ borderRadius: 'var(--r-md)', maxHeight: 300, objectFit: 'cover' }} />
         ) : (
-          <StackDiagram tags={project.tags} />
+          <StackDiagram project={project} />
         )}
       </div>
       <div className="featured__body">
@@ -73,6 +78,9 @@ export function FeaturedProject({ project }: { project: Project }) {
           )}
           {project.demo && (
             <ExternalLink href={project.demo} className="btn btn--outline">Live demo <Icon name="external" /></ExternalLink>
+          )}
+          {project.npm && (
+            <ExternalLink href={project.npm} className="btn btn--outline">npm <Icon name="external" /></ExternalLink>
           )}
           {project.github && (
             <ExternalLink href={project.github} className="btn btn--outline"><Icon name="github" />Source</ExternalLink>

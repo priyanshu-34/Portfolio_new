@@ -76,6 +76,11 @@ export interface CaseStudy {
   architecture: { label: string; items: string[] }[];
   features: { title: string; body: string }[];
   learnings: string[];
+  /** Headline results shown as a stats row, e.g. { value: '12/13', label: 'attacks stopped' }. */
+  results?: { value: string; label: string }[];
+  /** Demo media (image, GIF or animated SVG) shown on the project page. */
+  demoImage?: string;
+  demoAlt?: string;
 }
 
 export interface Project {
@@ -86,7 +91,11 @@ export interface Project {
   tags: string[];
   github?: string;
   demo?: string;
+  /** npm package page, for libraries. */
+  npm?: string;
   image?: string;
+  /** Card visual when there is no image: a core box and the pieces around it. */
+  visual?: { core: string; items: string[] };
   featured: boolean;
   order: number;
   caseStudy?: CaseStudy;

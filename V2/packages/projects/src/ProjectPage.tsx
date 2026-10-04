@@ -33,7 +33,7 @@ export function ProjectPage() {
   const next = projects[(index + 1) % projects.length];
   const facts = [
     cs?.role && { label: 'Role', value: cs.role },
-    { label: 'Type', value: 'Personal project' },
+    { label: 'Type', value: project.npm ? 'Open-source library' : 'Personal project' },
     cs?.timeline && { label: 'Timeline', value: cs.timeline },
     { label: 'Stack', value: project.tags.join(', ') },
   ].filter(Boolean) as { label: string; value: string }[];
@@ -50,6 +50,7 @@ export function ProjectPage() {
           <p className="page-hero__lede">{project.summary}</p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, paddingTop: 8 }}>
             {project.github && <ExternalLink href={project.github} className="btn btn--primary btn--lg"><Icon name="github" size={18} />View source</ExternalLink>}
+            {project.npm && <ExternalLink href={project.npm} className="btn btn--outline btn--lg">View on npm <Icon name="external" /></ExternalLink>}
             {project.demo && <ExternalLink href={project.demo} className="btn btn--outline btn--lg">Live demo <Icon name="external" /></ExternalLink>}
           </div>
         </div>
@@ -67,7 +68,22 @@ export function ProjectPage() {
       </section>
 
       <div className="container" style={{ paddingTop: 96, display: 'flex', flexDirection: 'column', gap: 96 }}>
-        {project.image && (
+        {cs?.results && cs.results.length > 0 && (
+          <section aria-label="Results" className="results">
+            {cs.results.map((r) => (
+              <div key={r.label} className="results__cell">
+                <span className="results__value">{r.value}</span>
+                <span className="results__label">{r.label}</span>
+              </div>
+            ))}
+          </section>
+        )}
+        {cs?.demoImage ? (
+          <figure style={{ margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <img src={cs.demoImage} alt={cs.demoAlt ?? `${project.name} demo`} loading="lazy" style={{ width: '100%', borderRadius: 'var(--r-lg)', border: '1px solid var(--c-border)', background: '#282d35' }} />
+            {cs.demoAlt && <figcaption className="muted" style={{ fontSize: 14, textAlign: 'center' }}>{cs.demoAlt}</figcaption>}
+          </figure>
+        ) : project.image && (
           <img src={project.image} alt={`${project.name} screenshot`} style={{ width: '100%', borderRadius: 'var(--r-lg)', border: '1px solid var(--c-border)' }} />
         )}
         {cs && cs.overview.length > 0 && (
