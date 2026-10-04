@@ -109,3 +109,10 @@
 .folder-nav a:hover { color: var(--c-text); }
 .folder-nav__label { font-size: 12px; font-weight: 600; color: var(--c-text-2); text-transform: uppercase; letter-spacing: 0.06em; }
 .folder-nav__title { font-weight: 600; line-height: 1.4; }
+
+/* Tables in posts */
+.prose table { display: block; width: 100%; max-width: 100%; overflow-x: auto; border-collapse: collapse; font-size: 16px; line-height: 1.5; }
+.prose th, .prose td { padding: 10px 14px; border: 1px solid var(--c-border); text-align: left; vertical-align: top; }
+.prose th { background: var(--c-surface); font-weight: 600; color: var(--c-text-2); font-size: 14px; }
+.prose td code, .prose th code { font-size: 13px; white-space: nowrap; }
+@media (max-width: 640px) { .prose table { font-size: 14px; } }
