@@ -232,32 +232,49 @@ function HomePostCard({ post }: { post: Post }) {
 const str = (v: string) => <span className="s">"{v}"</span>;
 const list = (items: string[]) => items.map((it, i) => <span key={it}>{str(it)}{i < items.length - 1 ? ', ' : ''}</span>);
 
+/** Firestore stores maps with sorted keys; show them in a deliberate order. */
+function ordered<T>(obj: Record<string, T>, preferred: string[]): [string, T][] {
+  const keys = Object.keys(obj);
+  const rank = (k: string) => (preferred.includes(k) ? preferred.indexOf(k) : preferred.length);
+  return keys.sort((a, b) => rank(a) - rank(b)).map((k) => [k, obj[k]]);
+}
+
+/** One code line; wrapped text hangs under the line's own indent. */
+function Line({ indent = 0, children }: { indent?: number; children: React.ReactNode }) {
+  return (
+    <div className="code-line" style={{ paddingLeft: `${indent * 2 + 2}ch`, textIndent: '-2ch' }}>
+      {children}
+    </div>
+  );
+}
+
 /** The hero code card, rendered from profile data as a TypeScript object. */
 function EngineerCode({ profile }: { profile: Profile }) {
   // Older content stored the stack as a flat list.
   const stack: Record<string, string[]> = Array.isArray(profile.stack) ? { core: profile.stack as unknown as string[] } : profile.stack ?? {};
+  const impact = profile.impact ?? {};
   return (
-    <pre>
-      <span className="k">export const</span> engineer = {'{'}{'\n'}
-      {'  '}name: {str(profile.name)},{'\n'}
-      {'  '}role: {str(profile.role)},{'\n'}
-      {'  '}building: {str(`AgentOS @ ${profile.company}`)},{'\n'}
-      {'  '}focus: [{'\n'}
-      {profile.focus.map((f) => <span key={f}>{'    '}{str(f)},{'\n'}</span>)}
-      {'  '}],{'\n'}
-      {'  '}stack: {'{'}{'\n'}
-      {Object.entries(stack).map(([group, items]) => (
-        <span key={group}>{'    '}{group}: [{list(items)}],{'\n'}</span>
+    <div className="code-lines" role="img" aria-label={`${profile.name}, ${profile.role}. Focus: ${profile.focus.join(', ')}.`}>
+      <Line><span className="k">export const</span> engineer = {'{'}</Line>
+      <Line indent={1}>name: {str(profile.name)},</Line>
+      <Line indent={1}>role: {str(profile.role)},</Line>
+      <Line indent={1}>building: {str(`AgentOS @ ${profile.company}`)},</Line>
+      <Line indent={1}>focus: [</Line>
+      {profile.focus.map((f) => <Line key={f} indent={2}>{str(f)},</Line>)}
+      <Line indent={1}>],</Line>
+      <Line indent={1}>stack: {'{'}</Line>
+      {ordered(stack, ['languages', 'backend', 'ai']).map(([group, items]) => (
+        <Line key={group} indent={2}>{group}: [{list(items)}],</Line>
       ))}
-      {'  '}{'}'},{'\n'}
-      {profile.impact && Object.keys(profile.impact).length > 0 && (
-        <>
-          {'  '}impact: {'{'} {Object.entries(profile.impact).map(([k, v], i, all) => (
+      <Line indent={1}>{'}'},</Line>
+      {Object.keys(impact).length > 0 && (
+        <Line indent={1}>
+          impact: {'{'} {ordered(impact, ['agentRunsPerDay', 'experience']).map(([k, v], i, all) => (
             <span key={k}>{k}: {str(v)}{i < all.length - 1 ? ', ' : ''}</span>
-          ))} {'}'},{'\n'}
-        </>
+          ))} {'}'},
+        </Line>
       )}
-      {'}'};
-    </pre>
+      <Line>{'}'};</Line>
+    </div>
   );
 }

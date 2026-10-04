@@ -80,3 +80,7 @@
 .home-projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 24px; }
 .award__link { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; padding: 8px 0 0; margin-top: auto; }
 .award { height: 100%; }
+
+.code-lines { padding: 20px; font-family: var(--font-mono); font-size: 13px; line-height: 1.75; color: var(--c-text-2); }
+.code-line { white-space: pre-wrap; overflow-wrap: anywhere; }
+@media (max-width: 640px) { .code-lines { padding: 16px; font-size: 12px; } }
