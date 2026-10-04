@@ -60,7 +60,7 @@ To load the resume content into Firestore: sign in at `/blog/admin` and click **
 
 ## Writing from Markdown
 
-Posts can also be Markdown files in `content/blog/**` — push to `main` and Netlify publishes them, no Firestore involved. Directories become folders (`content/blog/low-level-design/…` → `/blog/folders/low-level-design`), and `_folder.md` sets a folder's title, description and order. Front matter, images and rules: [content/blog/README.md](content/blog/README.md). The build plugin is `tools/blog-posts-plugin.ts`.
+Posts can also be Markdown files in `content/blog/**` — push to `main` and Netlify publishes them, no Firestore involved. Directories become folders and post URLs follow them (`content/blog/low-level-design/parking-lot.md` → `/blog/low-level-design/parking-lot`; root files → `/blog/<slug>`), and `_folder.md` sets a folder's title, description and order. Front matter, images and rules: [content/blog/README.md](content/blog/README.md). The build plugin is `tools/blog-posts-plugin.ts`.
 
 ## Writing (owner only)
 

@@ -6,9 +6,15 @@ from these files show up together.
 
 ## Folders
 
-The directory is the folder: `low-level-design/parking-lot.md` is listed under
-**Low-level design** at `/blog/folders/low-level-design`. Nest folders freely
-(`system-design/caching/lru.md`). Add a `_folder.md` to a directory to give it a
+The directory is the folder, and the post's address follows it:
+
+| File | Post URL | Folder page |
+| --- | --- | --- |
+| `parking-lot.md` | `/blog/parking-lot` | — |
+| `low-level-design/parking-lot.md` | `/blog/low-level-design/parking-lot` | `/blog/low-level-design` |
+| `system-design/caching/lru.md` | `/blog/system-design/caching/lru` | `/blog/system-design/caching` |
+
+Nest folders freely. Add a `_folder.md` to a directory to give it a
 title, description and order:
 
 ```md
@@ -19,8 +25,9 @@ order: 1
 Object-oriented design problems, worked through with code.
 ```
 
-Post URLs are `/blog/<slug>` regardless of folder, so moving a file between
-folders doesn't break links you've shared.
+Slugs are unique across the whole blog. If a post moves to another folder, its
+old address redirects to the new one, so shared links keep working. `admin`
+and `folders` can't be used as top-level folder names.
 
 ## A post
 

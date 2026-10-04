@@ -75,6 +75,7 @@ export function blogPosts({ dir, editBase }: Options): Plugin {
         continue;
       }
       if (name.startsWith('_') || name.toLowerCase() === 'readme') continue;
+      if (RESERVED.has(folder.split('/')[0])) throw new Error(`[blog] ${rel}: folder "${folder.split('/')[0]}" is reserved; rename the directory.`);
       const status = String(data.status ?? 'published');
       if (status === 'draft' && isProduction) continue;
       const slug = slugify(String(data.slug ?? name)).replace(/\//g, '-');

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { deletePost, formatDate, safeUrl, listAllPosts, siteUrl, useAsync, useDocumentTitle, usePortfolio, writePortfolio, invalidatePortfolio, type Post, type PostStatus } from '@pf/core';
+import { deletePost, formatDate, postPath, safeUrl, listAllPosts, siteUrl, useAsync, useDocumentTitle, usePortfolio, writePortfolio, invalidatePortfolio, type Post, type PostStatus } from '@pf/core';
 import { EmptyState, Icon, SiteLink, copyText, useToast } from '@pf/ui';
 import { AdminBar } from './AdminShell';
 import { MediumDialog } from './MediumDialog';
@@ -125,7 +125,7 @@ export function DashboardPage() {
                   <tr key={post.slug}>
                     <td>
                       {isRepo(post) ? (
-                        <SiteLink site="blog" to={`/${post.slug}`} className="table__title">{post.title}</SiteLink>
+                        <SiteLink site="blog" to={postPath(post)} className="table__title">{post.title}</SiteLink>
                       ) : post.type === 'medium' ? (
                         <a href={safeUrl(post.externalUrl) || '#'} target="_blank" rel="noopener noreferrer" className="table__title">{post.title}</a>
                       ) : (
@@ -149,7 +149,7 @@ export function DashboardPage() {
                           <button
                             type="button"
                             className="btn btn--outline btn--sm"
-                            onClick={async () => show((await copyText(post.type === 'medium' ? safeUrl(post.externalUrl) : siteUrl('blog', `/${post.slug}`))) ? 'Link copied' : 'Could not copy')}
+                            onClick={async () => show((await copyText(post.type === 'medium' ? safeUrl(post.externalUrl) : siteUrl('blog', postPath(post)))) ? 'Link copied' : 'Could not copy')}
                           >
                             Copy link
                           </button>

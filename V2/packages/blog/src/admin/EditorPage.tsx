@@ -6,7 +6,7 @@ import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { createLowlight, common } from 'lowlight';
-import { RESERVED_SLUGS, isRepoPost, knownFolders, listAllPosts, normalizeFolder, getPost, postExists, readingMinutes, savePost, sitePath, siteUrl, slugify, uploadImage, useDocumentTitle, type Post, type PostStatus, type PostType } from '@pf/core';
+import { RESERVED_SLUGS, isRepoPost, postPath, knownFolders, listAllPosts, normalizeFolder, getPost, postExists, readingMinutes, savePost, sitePath, siteUrl, slugify, uploadImage, useDocumentTitle, type Post, type PostStatus, type PostType } from '@pf/core';
 import { Icon, PageLoading, SiteLink, useToast, type IconName } from '@pf/ui';
 import { AdminBar } from './AdminShell';
 import { PublishedDialog } from './PublishedDialog';
@@ -402,7 +402,7 @@ function PostEditor({ initial }: { initial: Post }) {
           <div className="field">
             <label className="field__label" htmlFor="slug-input">URL</label>
             <div style={{ display: 'flex', height: 40, border: '1px solid var(--c-border)', borderRadius: 4, background: '#fff', overflow: 'hidden' }}>
-              <span style={{ display: 'flex', alignItems: 'center', padding: '0 10px', background: 'var(--c-surface)', borderRight: '1px solid var(--c-border)', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--c-text-2)' }}>{sitePath('blog', '/')}{sitePath('blog', '/').endsWith('/') ? '' : '/'}</span>
+              <span style={{ display: 'flex', alignItems: 'center', padding: '0 10px', background: 'var(--c-surface)', borderRight: '1px solid var(--c-border)', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--c-text-2)' }}>{sitePath('blog', post.folder ? `/${post.folder}/` : '/')}</span>
               <input
                 id="slug-input"
                 style={{ flex: 1, minWidth: 0, border: 0, outline: 'none', padding: '0 10px', fontFamily: 'var(--font-mono)', fontSize: 12 }}
@@ -414,7 +414,7 @@ function PostEditor({ initial }: { initial: Post }) {
                 onBlur={() => update({ slug: slugify(post.slug) })}
               />
             </div>
-            {isLive && <span className="field__hint">Changing the URL breaks links you've already shared.</span>}
+            {isLive && <span className="field__hint">Changing the URL or folder changes the post's address; old links redirect.</span>}
           </div>
           <div className="field">
             <label className="field__label" htmlFor="cover-url">Cover image URL</label>
@@ -432,7 +432,7 @@ function PostEditor({ initial }: { initial: Post }) {
             </label>
           </div>
           {isLive && (
-            <a href={siteUrl('blog', `/${post.slug}`)} target="_blank" rel="noopener noreferrer" className="btn btn--outline">View live post <Icon name="external" /></a>
+            <a href={siteUrl('blog', postPath(post))} target="_blank" rel="noopener noreferrer" className="btn btn--outline">View live post <Icon name="external" /></a>
           )}
           <p className="field__hint">Tip: press ⌘S / Ctrl+S to save.</p>
         </aside>

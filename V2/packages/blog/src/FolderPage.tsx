@@ -1,11 +1,9 @@
-import { useParams } from 'react-router-dom';
-import { folderTitle, knownFolders, listPublishedPosts, sortInFolder, useAsync, useDocumentTitle } from '@pf/core';
+import { folderPath, folderTitle, knownFolders, listPublishedPosts, sortInFolder, useAsync, useDocumentTitle } from '@pf/core';
 import { EmptyState, Icon, PageShell, Skeleton, SiteLink } from '@pf/ui';
 import { FolderCard, PostRow } from './PostList';
 import './blog.css';
 
-export function FolderPage() {
-  const path = (useParams()['*'] ?? '').replace(/\/+$/, '');
+export function FolderPage({ path }: { path: string }) {
   const posts = useAsync(listPublishedPosts);
   const all = posts.data ?? [];
   const folders = knownFolders(all);
@@ -29,7 +27,7 @@ export function FolderPage() {
                 {c === path ? (
                   <span aria-current="page" style={{ fontWeight: 600 }}>{folders.find((f) => f.path === c)?.title ?? folderTitle(c)}</span>
                 ) : (
-                  <SiteLink site="blog" to={`/folders/${c}`} style={{ fontWeight: 600, color: 'var(--c-text-2)' }}>{folders.find((f) => f.path === c)?.title ?? folderTitle(c)}</SiteLink>
+                  <SiteLink site="blog" to={folderPath(c)} style={{ fontWeight: 600, color: 'var(--c-text-2)' }}>{folders.find((f) => f.path === c)?.title ?? folderTitle(c)}</SiteLink>
                 )}
               </span>
             ))}

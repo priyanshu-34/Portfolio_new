@@ -1,13 +1,11 @@
-import { useParams } from 'react-router-dom';
-import { folderTitle, getPost, knownFolders, listPublishedPosts, safeUrl, siteUrl, sortInFolder, useAsync, useAuth, useDocumentTitle, usePortfolio, type Post } from '@pf/core';
+import { folderPath as folderUrl, folderTitle, getPost, postPath, knownFolders, listPublishedPosts, safeUrl, siteUrl, sortInFolder, useAsync, useAuth, useDocumentTitle, usePortfolio, type Post } from '@pf/core';
 import { EmptyState, ExternalLink, Icon, PageLoading, PageShell, SiteLink } from '@pf/ui';
 import { PostMeta } from './PostMeta';
 import { ShareButtons, SharePanel } from './share';
 import { PostBody } from './PostBody';
 import './blog.css';
 
-export function ArticlePage() {
-  const { slug = '' } = useParams();
+export function ArticlePage({ slug }: { slug: string }) {
   const { admin, ready } = useAuth();
   // Wait for the auth session so the owner can open drafts by direct link.
   const { data: post, loading, error } = useAsync(() => (ready ? getPost(slug) : new Promise<null>(() => {})), [slug, ready, admin]);
@@ -33,10 +31,13 @@ export function ArticlePage() {
     );
   }
 
-  const url = siteUrl('blog', `/${post.slug}`);
+  const url = siteUrl('blog', postPath(post));
   const published = more.data ?? [];
   const folderPath = post.folder ?? '';
-  const folderName = folderPath ? knownFolders(published).find((f) => f.path === folderPath)?.title ?? folderTitle(folderPath) : '';
+  const allFolders = knownFolders(published);
+  const titleOf = (p: string) => allFolders.find((f) => f.path === p)?.title ?? folderTitle(p);
+  const folderName = folderPath ? titleOf(folderPath) : '';
+  const crumbs = folderPath ? folderPath.split('/').map((_, i, parts) => ({ path: parts.slice(0, i + 1).join('/'), title: titleOf(parts.slice(0, i + 1).join('/')) })) : [];
   const siblings = folderPath ? sortInFolder(published.filter((p) => p.folder === folderPath)) : [];
   const at = siblings.findIndex((p) => p.slug === post.slug);
   const prev = at > 0 ? siblings[at - 1] : undefined;
@@ -51,14 +52,14 @@ export function ArticlePage() {
             <SiteLink site="blog" to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--c-text-2)' }}>
               <Icon name="arrowLeft" />All writing
             </SiteLink>
-            {folderPath && (
-              <>
+            {crumbs.map((c) => (
+              <span key={c.path} style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
                 <span aria-hidden="true" style={{ color: 'var(--c-text-4)' }}>/</span>
-                <SiteLink site="blog" to={`/folders/${folderPath}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-                  <Icon name="folder" size={14} />{folderName}
+                <SiteLink site="blog" to={folderUrl(c.path)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                  <Icon name="folder" size={14} />{c.title}
                 </SiteLink>
-              </>
-            )}
+              </span>
+            ))}
           </nav>
           {admin && post.source !== 'repo' && (
             <SiteLink site="blog" to={`/admin/edit/${post.slug}`} className="btn btn--outline btn--sm"><Icon name="pen" />Edit</SiteLink>
@@ -99,13 +100,13 @@ export function ArticlePage() {
         {(prev || next) && (
           <nav aria-label={`More in ${folderName}`} className="folder-nav">
             {prev ? (
-              <SiteLink site="blog" to={`/${prev.slug}`} className="card card--link">
+              <SiteLink site="blog" to={postPath(prev)} className="card card--link">
                 <span className="folder-nav__label">← Previous in {folderName}</span>
                 <span className="folder-nav__title">{prev.title}</span>
               </SiteLink>
             ) : <span />}
             {next && (
-              <SiteLink site="blog" to={`/${next.slug}`} className="card card--link" style={{ textAlign: 'right' }}>
+              <SiteLink site="blog" to={postPath(next)} className="card card--link" style={{ textAlign: 'right' }}>
                 <span className="folder-nav__label">Next in {folderName} →</span>
                 <span className="folder-nav__title">{next.title}</span>
               </SiteLink>
@@ -139,7 +140,7 @@ export function ArticlePage() {
               return p.type === 'medium' ? (
                 <ExternalLink key={p.slug} href={safeUrl(p.externalUrl) || '#'} className="card card--link" style={style}>{inner}</ExternalLink>
               ) : (
-                <SiteLink key={p.slug} site="blog" to={`/${p.slug}`} className="card card--link" style={style}>{inner}</SiteLink>
+                <SiteLink key={p.slug} site="blog" to={postPath(p)} className="card card--link" style={style}>{inner}</SiteLink>
               );
             })}
           </div>

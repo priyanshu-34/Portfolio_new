@@ -1,4 +1,4 @@
-import { listPublishedPosts, safeUrl, useAsync, useDocumentTitle, usePortfolio, formatDate, type Post, type Profile } from '@pf/core';
+import { listPublishedPosts, postPath, safeUrl, useAsync, useDocumentTitle, usePortfolio, formatDate, type Post, type Profile } from '@pf/core';
 import { ExternalLink, Icon, PageShell, SectionHead, SiteLink, Tags } from '@pf/ui';
 import { ProjectCard } from '@pf/projects';
 import './home.css';
@@ -225,7 +225,7 @@ function HomePostCard({ post }: { post: Post }) {
   return post.type === 'medium' ? (
     <ExternalLink href={safeUrl(post.externalUrl) || '#'} className="card card--link" style={style}>{body}</ExternalLink>
   ) : (
-    <SiteLink site="blog" to={`/${post.slug}`} className="card card--link" style={style}>{body}</SiteLink>
+    <SiteLink site="blog" to={postPath(post)} className="card card--link" style={style}>{body}</SiteLink>
   );
 }
 

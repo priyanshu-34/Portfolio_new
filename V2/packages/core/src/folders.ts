@@ -1,5 +1,18 @@
 import type { Folder, Post } from './types';
 
+/** First folder segments that would collide with blog routes. */
+export const RESERVED_FOLDERS = ['admin', 'folders'];
+
+/** Path of a post inside the blog: /<folder>/<slug>, or /<slug> at the root. */
+export function postPath(post: { slug: string; folder?: string | null }): string {
+  return post.folder ? `/${post.folder}/${post.slug}` : `/${post.slug}`;
+}
+
+/** Path of a folder page inside the blog. */
+export function folderPath(path: string): string {
+  return `/${path}`;
+}
+
 /** "low-level-design" → "Low-level design" */
 export function folderTitle(path: string): string {
   const last = path.split('/').pop() ?? path;
@@ -9,12 +22,13 @@ export function folderTitle(path: string): string {
 
 /** Normalises a folder typed by hand: "Low Level Design/" → "low-level-design". */
 export function normalizeFolder(input: string): string {
-  return input
+  const parts = input
     .toLowerCase()
     .split('/')
     .map((part) => part.trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''))
-    .filter(Boolean)
-    .join('/');
+    .filter(Boolean);
+  if (parts[0] && RESERVED_FOLDERS.includes(parts[0])) parts[0] = `${parts[0]}-posts`;
+  return parts.join('/');
 }
 
 /** Folders from repo metadata plus every folder that has posts, with counts. */

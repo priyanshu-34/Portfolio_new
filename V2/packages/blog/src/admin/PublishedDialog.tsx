@@ -1,9 +1,9 @@
-import { siteUrl, type Post } from '@pf/core';
+import { postPath, siteUrl, type Post } from '@pf/core';
 import { Dialog, Icon, SiteLink } from '@pf/ui';
 import { SharePanel } from '../share';
 
 export function PublishedDialog({ post, onClose }: { post: Post; onClose: () => void }) {
-  const url = siteUrl('blog', `/${post.slug}`);
+  const url = siteUrl('blog', postPath(post));
   return (
     <Dialog
       labelledBy="published-title"

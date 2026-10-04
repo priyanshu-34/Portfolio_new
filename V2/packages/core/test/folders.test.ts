@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildFolders, folderTitle, normalizeFolder, sortInFolder } from '../src/folders';
+import { buildFolders, folderTitle, normalizeFolder, postPath, sortInFolder } from '../src/folders';
 import type { Post } from '../src/types';
 
 const post = (slug: string, folder: string, publishedAt: number, order: number | null = null) =>
@@ -22,6 +22,13 @@ describe('folders', () => {
       ['system-design/caching', 'Caching', 1],
       ['system-design', 'System design', 0],
     ]);
+  });
+
+  it('builds post URLs from the folder', () => {
+    expect(postPath({ slug: 'parking-lot', folder: '' })).toBe('/parking-lot');
+    expect(postPath({ slug: 'parking-lot', folder: 'low-level-design' })).toBe('/low-level-design/parking-lot');
+    expect(postPath({ slug: 'lru', folder: 'system-design/caching' })).toBe('/system-design/caching/lru');
+    expect(normalizeFolder('Admin/x')).toBe('admin-posts/x');
   });
 
   it('orders posts in a folder by explicit order, then date', () => {
