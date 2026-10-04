@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { fetchMediumFeed, mediumHandle, postExists, safeUrl, savePost, slugify, usePortfolio, type MediumItem, type Post } from '@pf/core';
+import { useNavigate } from 'react-router-dom';
+import { fetchMediumFeed, mediumHandle, mediumToArticle, postExists, readingMinutes, safeUrl, savePost, sitePath, slugify, usePortfolio, type MediumItem, type Post } from '@pf/core';
 import { Dialog, Icon } from '@pf/ui';
 
 function toPost(item: { title: string; link: string; subtitle: string; image: string; publishedAt: number; tags: string[] }): Post {
@@ -28,7 +29,39 @@ export function MediumDialog({ existing, onClose, onAttached }: { existing: Post
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [manual, setManual] = useState({ link: '', title: '', subtitle: '', image: '' });
+  const navigate = useNavigate();
   const attachedLinks = new Set(existing.filter((p) => p.type === 'medium').map((p) => p.externalUrl));
+  const existingTitles = new Set(existing.filter((p) => p.type !== 'medium').map((p) => p.title.toLowerCase()));
+
+  /** Copies the full Medium post into a native draft and opens it in the editor. */
+  async function copyToSite(item: MediumItem) {
+    setBusy(`copy:${item.link}`);
+    setError('');
+    try {
+      const a = mediumToArticle(item);
+      let slug = slugify(a.title);
+      if (await postExists(slug)) slug = `${slug}-${Date.now().toString(36).slice(-4)}`;
+      const saved = await savePost({
+        slug,
+        type: 'article',
+        status: 'draft',
+        title: a.title,
+        subtitle: a.subtitle,
+        coverUrl: a.coverUrl,
+        contentHtml: a.contentHtml,
+        tags: item.tags.slice(0, 8),
+        externalUrl: '',
+        readMinutes: readingMinutes(a.contentHtml),
+        createdAt: 0,
+        updatedAt: 0,
+        publishedAt: item.publishedAt,
+      });
+      navigate(sitePath('blog', `/admin/edit/${saved.slug}`));
+    } catch (e) {
+      setError((e as Error).message || 'Could not copy the post.');
+      setBusy(null);
+    }
+  }
 
   useEffect(() => {
     if (!handle) return;
@@ -63,7 +96,7 @@ export function MediumDialog({ existing, onClose, onAttached }: { existing: Post
 
   return (
     <Dialog title={<h2 style={{ fontSize: 20, fontWeight: 600 }}>Attach Medium posts</h2>} onClose={onClose} footer={<button type="button" className="btn btn--outline" onClick={onClose}>Done</button>}>
-      <p className="muted" style={{ fontSize: 14 }}>Attached posts are listed on your Writing page and open on Medium.</p>
+      <p className="muted" style={{ fontSize: 14 }}><strong>Copy to site</strong> brings the full post here as a draft you can edit and publish. <strong>Attach link</strong> lists it on your Writing page and opens it on Medium.</p>
       {error && <p className="notice notice--error" role="alert">{error}</p>}
       {handle && (
         <section style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -80,9 +113,14 @@ export function MediumDialog({ existing, onClose, onAttached }: { existing: Post
                   <div style={{ fontWeight: 600, fontSize: 14 }}>{item.title}</div>
                   <div className="muted" style={{ fontSize: 12 }}>{new Date(item.publishedAt).toLocaleDateString()}</div>
                 </div>
-                <button type="button" className="btn btn--secondary btn--sm" disabled={done || busy === item.link} onClick={() => attach(item)}>
-                  {done ? <><Icon name="check" />Attached</> : busy === item.link ? 'Attaching…' : 'Attach'}
-                </button>
+                <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+                  <button type="button" className="btn btn--outline btn--sm" disabled={busy !== null || !item.contentHtml} title="Copy the full post to this site as a draft" onClick={() => copyToSite(item)}>
+                    {busy === `copy:${item.link}` ? 'Copying…' : existingTitles.has(mediumToArticle(item).title.toLowerCase()) ? 'Copy again' : 'Copy to site'}
+                  </button>
+                  <button type="button" className="btn btn--secondary btn--sm" disabled={done || busy !== null} onClick={() => attach(item)}>
+                    {done ? <><Icon name="check" />Attached</> : busy === item.link ? 'Attaching…' : 'Attach link'}
+                  </button>
+                </div>
               </div>
             );
           })}
