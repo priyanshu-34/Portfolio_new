@@ -1,0 +1,7 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "v2-web", "runtimeExecutable": "npm", "runtimeArgs": ["--prefix", "V2", "run", "dev"], "port": 5180 },
+    { "name": "v2-blog", "runtimeExecutable": "npm", "runtimeArgs": ["--prefix", "V2", "run", "dev:blog"], "port": 5182 }
+  ]
+}

@@ -22,20 +22,18 @@ export const seedPortfolio: PortfolioData = {
       'scalable backend systems',
       'distributed systems',
       'agentic AI & multi-agent orchestration',
-      'workflow orchestration',
       'event-driven architecture',
     ],
     stack: {
       languages: ['TypeScript', 'Go', 'Python'],
       backend: ['Node.js', 'NestJS', 'gRPC', 'Kafka', 'Redis'],
-      ai: ['LangChain', 'LangGraph', 'RAG', 'Mastra', 'MCP'],
+      ai: ['LangChain', 'LangGraph', 'RAG', 'Mastra'],
     },
     impact: { agentRunsPerDay: '60K+', experience: '3 yrs' },
     socials: {
       github: 'https://github.com/priyanshu-34',
       linkedin: 'https://www.linkedin.com/in/priyans34/',
       leetcode: 'https://leetcode.com/u/priyans34/',
-      gfg: 'https://www.geeksforgeeks.org/user/itsaslowball',
       medium: 'https://medium.com/@priyans34',
     },
     metrics: [
@@ -122,7 +120,7 @@ export const seedPortfolio: PortfolioData = {
       summary:
         'An event-driven services marketplace on microservices. Kafka runs async workflows, gRPC handles low-latency service calls, and RBAC guards access. Secure bidding and escrow lock funds in-transaction until completion or dispute, with a real-time Redis + WebSockets + BullMQ notification pipeline.',
       tags: ['NestJS', 'Kafka', 'gRPC', 'Redis', 'WebSockets', 'MongoDB'],
-      github: 'https://github.com/priyanshu-34/Marketplace',
+      github: 'https://github.com/TechBidding',
       featured: true,
       order: 1,
       caseStudy: {
