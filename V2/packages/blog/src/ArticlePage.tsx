@@ -1,10 +1,9 @@
-import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPost, listPublishedPosts, safeUrl, siteUrl, useAsync, useAuth, useDocumentTitle, usePortfolio, type Post } from '@pf/core';
 import { EmptyState, ExternalLink, Icon, PageLoading, PageShell, SiteLink } from '@pf/ui';
 import { PostMeta } from './PostMeta';
 import { ShareButtons, SharePanel } from './share';
-import { sanitizePostHtml } from './sanitize';
+import { PostBody } from './PostBody';
 import './blog.css';
 
 export function ArticlePage() {
@@ -17,7 +16,6 @@ export function ArticlePage() {
   const profile = portfolio.data?.data.profile;
   useDocumentTitle(post ? post.title : undefined);
 
-  const html = useMemo(() => (post ? sanitizePostHtml(post.contentHtml) : ''), [post]);
 
   if (loading || !ready) return <PageShell><PageLoading /></PageShell>;
   const visible = post && (post.status !== 'draft' || admin);
@@ -76,7 +74,7 @@ export function ArticlePage() {
             <ExternalLink href={safeUrl(post.externalUrl) || '#'} className="btn btn--primary">Read on Medium <Icon name="external" /></ExternalLink>
           </div>
         ) : (
-          <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
+          <PostBody html={post.contentHtml} />
         )}
         <SharePanel url={url} title={post.title} />
         {profile && (

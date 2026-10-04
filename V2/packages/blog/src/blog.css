@@ -71,3 +71,26 @@
 @media (max-width: 420px) { .share-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 .subscribe { padding: 24px; border: 1px solid var(--c-border); border-radius: var(--r-lg); background: var(--c-primary-tint); display: flex; flex-direction: column; gap: 12px; }
+
+/* Code blocks: no wrapping, language bar, syntax colours from the design tokens. */
+.prose pre { white-space: pre; tab-size: 2; }
+.prose pre code { white-space: inherit; }
+.code-block { border: 1px solid var(--c-border); border-radius: var(--r-lg); overflow: hidden; background: var(--c-surface); }
+.prose > .code-block { margin-top: 22px; }
+.code-block pre { margin: 0 !important; border: 0 !important; border-radius: 0 !important; }
+.code-block__bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 6px 8px 6px 16px; border-bottom: 1px solid var(--c-border); background: #fff; font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--c-text-2); }
+.code-block__copy { height: 30px; padding: 0 10px; border: 1px solid var(--c-border); border-radius: var(--r-sm); background: #fff; color: var(--c-text-2); font-size: 12px; font-weight: 600; cursor: pointer; }
+.code-block__copy:hover { color: var(--c-text); background: var(--c-surface); }
+
+.hljs-keyword, .hljs-selector-tag, .hljs-doctag { color: #5d50be; font-weight: 500; }
+.hljs-string, .hljs-regexp, .hljs-addition, .hljs-attribute, .hljs-template-tag { color: #007a52; }
+.hljs-number, .hljs-literal, .hljs-symbol, .hljs-bullet { color: #a31b00; }
+.hljs-title, .hljs-title.function_, .hljs-section { color: #0469e3; }
+.hljs-title.class_, .hljs-type, .hljs-built_in, .hljs-class .hljs-title { color: #3e3871; font-weight: 500; }
+.hljs-attr, .hljs-variable, .hljs-template-variable, .hljs-params, .hljs-property { color: #8a5a00; }
+.hljs-comment, .hljs-quote { color: #647696; font-style: italic; }
+.hljs-meta, .hljs-meta .hljs-keyword { color: #9b2fd8; }
+.hljs-tag, .hljs-name, .hljs-selector-id, .hljs-selector-class { color: #0469e3; }
+.hljs-deletion { color: #a31b00; }
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: 700; }

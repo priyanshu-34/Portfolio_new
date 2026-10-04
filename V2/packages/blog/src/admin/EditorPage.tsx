@@ -4,11 +4,17 @@ import { useEditor, EditorContent, type Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import { createLowlight, common } from 'lowlight';
 import { RESERVED_SLUGS, getPost, postExists, readingMinutes, savePost, sitePath, siteUrl, slugify, uploadImage, useDocumentTitle, type Post, type PostStatus, type PostType } from '@pf/core';
 import { Icon, PageLoading, SiteLink, useToast, type IconName } from '@pf/ui';
 import { AdminBar } from './AdminShell';
 import { PublishedDialog } from './PublishedDialog';
-import { sanitizePostHtml } from '../sanitize';
+import { PostBody } from '../PostBody';
+import { LANGUAGES, normalizeLanguage } from '../code';
+
+const lowlight = createLowlight(common);
+let lastLanguage = 'typescript';
 import '../blog.css';
 
 const EMPTY: Post = {
@@ -119,7 +125,8 @@ function PostEditor({ initial }: { initial: Post }) {
 
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({ heading: { levels: [2, 3] }, link: { openOnClick: false, autolink: true } }),
+      StarterKit.configure({ heading: { levels: [2, 3] }, link: { openOnClick: false, autolink: true }, codeBlock: false }),
+      CodeBlockLowlight.configure({ lowlight, HTMLAttributes: { spellcheck: 'false' } }),
       Image,
       Placeholder.configure({ placeholder: 'Tell your story…' }),
     ],
@@ -326,7 +333,7 @@ function PostEditor({ initial }: { initial: Post }) {
             <div style={{ display: preview ? 'none' : 'block' }}>
               <EditorContent editor={editor} />
             </div>
-            {preview && editor && <div className="prose" dangerouslySetInnerHTML={{ __html: sanitizePostHtml(editor.getHTML()) }} />}
+            {preview && editor && <PostBody html={editor.getHTML()} />}
           </div>
         </main>
 
@@ -436,7 +443,7 @@ function Toolbar({ editor, onError }: { editor: Editor; onError: (msg: string) =
     { key: 'ul', label: 'Bulleted list', icon: 'list', active: editor.isActive('bulletList'), run: () => chain().toggleBulletList().run() },
     { key: 'ol', label: 'Numbered list', icon: 'listOrdered', active: editor.isActive('orderedList'), run: () => chain().toggleOrderedList().run() },
     { key: 'quote', label: 'Quote', icon: 'quote', active: editor.isActive('blockquote'), run: () => chain().toggleBlockquote().run() },
-    { key: 'pre', label: 'Code block', icon: 'code', active: editor.isActive('codeBlock'), run: () => chain().toggleCodeBlock().run() },
+    { key: 'pre', label: 'Code block', icon: 'code', active: editor.isActive('codeBlock'), run: () => chain().toggleCodeBlock({ language: lastLanguage }).run() },
     { key: 'img', label: 'Image', icon: 'image', run: () => fileRef.current?.click() },
     { key: 'hr', label: 'Divider', text: '—', run: () => chain().setHorizontalRule().run() },
   ];
@@ -468,6 +475,25 @@ function Toolbar({ editor, onError }: { editor: Editor; onError: (msg: string) =
             {b.icon ? <Icon name={b.icon} /> : b.text}
           </button>
         ),
+      )}
+      {editor.isActive('codeBlock') && (
+        <>
+          <span className="toolbar__sep" aria-hidden="true" />
+          <label className="sr-only" htmlFor="code-lang">Code language</label>
+          <select
+            id="code-lang"
+            className="toolbar__select"
+            value={normalizeLanguage(editor.getAttributes('codeBlock').language) || ''}
+            onChange={(e) => {
+              const language = e.target.value || null;
+              if (language) lastLanguage = language;
+              chain().updateAttributes('codeBlock', { language }).run();
+            }}
+          >
+            <option value="">Auto-detect</option>
+            {LANGUAGES.map((l) => <option key={l.id} value={l.id}>{l.label}</option>)}
+          </select>
+        </>
       )}
       <input ref={fileRef} type="file" accept="image/*" className="sr-only" tabIndex={-1} aria-hidden="true" onChange={onImage} />
     </div>
