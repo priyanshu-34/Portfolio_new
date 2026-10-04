@@ -1,0 +1,40 @@
+rules_version = '2';
+
+// Portfolio rules. Everything lives under /sites/portfolio, so this block can be
+// merged into a project that already serves another app without touching it.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isOwner() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email.lower() in [__ADMIN_EMAILS__];
+    }
+
+    match /sites/portfolio {
+      // Profile document: public, owner-edited.
+      allow read: if true;
+      allow write: if isOwner();
+
+      match /{section}/{id} {
+        allow read: if section in ['experience', 'awards', 'skills', 'projects'];
+        allow write: if isOwner() && section in ['experience', 'awards', 'skills', 'projects'];
+      }
+
+      // Drafts are private; unlisted posts are readable by direct link only.
+      match /posts/{slug} {
+        allow get: if resource.data.status in ['published', 'unlisted'] || isOwner();
+        allow list: if resource.data.status == 'published' || isOwner();
+        allow write: if isOwner();
+      }
+
+      // Newsletter sign-ups: anyone may add their email, only the owner reads.
+      match /subscribers/{id} {
+        allow create: if request.resource.data.keys().hasOnly(['email', 'createdAt'])
+          && request.resource.data.email is string
+          && request.resource.data.email.size() < 255
+          && request.resource.data.email.matches('^[^@ ]+@[^@ ]+[.][^@ ]+$');
+        allow read, update, delete: if isOwner();
+      }
+    }
+  }
+}

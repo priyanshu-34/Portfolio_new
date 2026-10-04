@@ -1,0 +1,78 @@
+import type { Project } from '@pf/core';
+import { ExternalLink, Icon, SiteLink, Tags } from '@pf/ui';
+import './projects.css';
+
+function StackDiagram({ tags, compact }: { tags: string[]; compact?: boolean }) {
+  const [core, ...rest] = tags;
+  return (
+    <div className="stack-diagram" aria-hidden="true">
+      <div className="stack-diagram__box stack-diagram__box--core">{core}{tags.includes('gRPC') ? ' · gRPC' : ''}</div>
+      <div className="stack-diagram__row">
+        {rest.filter((t) => t !== 'gRPC').slice(0, compact ? 3 : 4).map((t) => (
+          <span key={t} className="stack-diagram__box">{t}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function ProjectCard({ project }: { project: Project }) {
+  return (
+    <article className="card" style={{ display: 'flex', flexDirection: 'column' }}>
+      {project.image ? (
+        <img className="project-card__img" src={project.image} alt={`${project.name} screenshot`} loading="lazy" />
+      ) : (
+        <div className="project-card__placeholder"><StackDiagram tags={project.tags} compact /></div>
+      )}
+      <div className="project-card__body">
+        <h3 className="project-card__title">{project.name}</h3>
+        <p className="muted" style={{ fontSize: 15 }}>{project.summary}</p>
+        <Tags items={project.tags.slice(0, 5)} />
+        <div className="project-card__links">
+          {project.caseStudy && (
+            <SiteLink site="projects" to={`/${project.slug}`}>Case study <Icon name="arrowRight" size={14} /></SiteLink>
+          )}
+          {project.demo && (
+            <ExternalLink href={project.demo}>Live demo <Icon name="external" size={14} /></ExternalLink>
+          )}
+          {project.github && (
+            <ExternalLink href={project.github} className="secondary">Source <Icon name="external" size={14} /></ExternalLink>
+          )}
+        </div>
+      </div>
+    </article>
+  );
+}
+
+export function FeaturedProject({ project }: { project: Project }) {
+  return (
+    <article className="card featured">
+      <div className="featured__visual">
+        {project.image ? (
+          <img src={project.image} alt={`${project.name} screenshot`} style={{ borderRadius: 'var(--r-md)', maxHeight: 300, objectFit: 'cover' }} />
+        ) : (
+          <StackDiagram tags={project.tags} />
+        )}
+      </div>
+      <div className="featured__body">
+        <span className="badge badge--primary" style={{ alignSelf: 'flex-start' }}>Featured</span>
+        <h3 style={{ fontSize: 28, lineHeight: 1.25, fontWeight: 600 }}>{project.name}</h3>
+        <p className="muted">{project.summary}</p>
+        <Tags items={project.tags} />
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 'auto', paddingTop: 8 }}>
+          {project.caseStudy && (
+            <SiteLink site="projects" to={`/${project.slug}`} className="btn btn--primary">
+              Read case study <Icon name="arrowRight" />
+            </SiteLink>
+          )}
+          {project.demo && (
+            <ExternalLink href={project.demo} className="btn btn--outline">Live demo <Icon name="external" /></ExternalLink>
+          )}
+          {project.github && (
+            <ExternalLink href={project.github} className="btn btn--outline"><Icon name="github" />Source</ExternalLink>
+          )}
+        </div>
+      </div>
+    </article>
+  );
+}

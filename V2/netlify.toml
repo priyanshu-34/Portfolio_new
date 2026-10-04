@@ -1,0 +1,11 @@
+# Main site (portfolio + projects + blog under one domain).
+# For the blog on its own subdomain, create a second Netlify site from this
+# repo with base "V2", command "npm run build:blog" and publish "apps/blog/dist".
+[build]
+  command = "npm run build:web"
+  publish = "apps/web/dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
