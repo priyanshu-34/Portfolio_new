@@ -103,9 +103,19 @@ export interface PortfolioData {
 export type PostType = 'article' | 'note' | 'medium';
 export type PostStatus = 'draft' | 'published' | 'unlisted';
 
+export type PostSource = 'firestore' | 'repo';
+
 export interface Post {
   /** The slug doubles as the Firestore document id. */
   slug: string;
+  /** Where the post lives: written in the admin (Firestore) or a Markdown file in the repo. */
+  source?: PostSource;
+  /** Folder path, e.g. "low-level-design" or "system-design/caching"; '' = no folder. */
+  folder?: string;
+  /** Position inside its folder (lower first); falls back to date. */
+  order?: number | null;
+  /** Repo posts: link to edit the file on GitHub. */
+  editUrl?: string;
   type: PostType;
   status: PostStatus;
   title: string;
@@ -119,4 +129,13 @@ export interface Post {
   createdAt: number;
   updatedAt: number;
   publishedAt: number | null;
+}
+
+export interface Folder {
+  path: string;
+  title: string;
+  description: string;
+  order: number | null;
+  /** Published posts directly in this folder. */
+  count: number;
 }

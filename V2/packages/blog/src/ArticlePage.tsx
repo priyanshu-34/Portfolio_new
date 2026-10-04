@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { getPost, listPublishedPosts, safeUrl, siteUrl, useAsync, useAuth, useDocumentTitle, usePortfolio, type Post } from '@pf/core';
+import { folderTitle, getPost, knownFolders, listPublishedPosts, safeUrl, siteUrl, sortInFolder, useAsync, useAuth, useDocumentTitle, usePortfolio, type Post } from '@pf/core';
 import { EmptyState, ExternalLink, Icon, PageLoading, PageShell, SiteLink } from '@pf/ui';
 import { PostMeta } from './PostMeta';
 import { ShareButtons, SharePanel } from './share';
@@ -34,17 +34,37 @@ export function ArticlePage() {
   }
 
   const url = siteUrl('blog', `/${post.slug}`);
-  const others = (more.data ?? []).filter((p) => p.slug !== post.slug).slice(0, 3);
+  const published = more.data ?? [];
+  const folderPath = post.folder ?? '';
+  const folderName = folderPath ? knownFolders(published).find((f) => f.path === folderPath)?.title ?? folderTitle(folderPath) : '';
+  const siblings = folderPath ? sortInFolder(published.filter((p) => p.folder === folderPath)) : [];
+  const at = siblings.findIndex((p) => p.slug === post.slug);
+  const prev = at > 0 ? siblings[at - 1] : undefined;
+  const next = at >= 0 && at < siblings.length - 1 ? siblings[at + 1] : undefined;
+  const others = published.filter((p) => p.slug !== post.slug && p.folder !== folderPath).slice(0, 3);
 
   return (
     <PageShell>
       <article className="article">
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 12 }}>
-          <SiteLink site="blog" to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 600, color: 'var(--c-text-2)' }}>
-            <Icon name="arrowLeft" />All writing
-          </SiteLink>
-          {admin && (
+          <nav aria-label="Breadcrumb" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 600 }}>
+            <SiteLink site="blog" to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--c-text-2)' }}>
+              <Icon name="arrowLeft" />All writing
+            </SiteLink>
+            {folderPath && (
+              <>
+                <span aria-hidden="true" style={{ color: 'var(--c-text-4)' }}>/</span>
+                <SiteLink site="blog" to={`/folders/${folderPath}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                  <Icon name="folder" size={14} />{folderName}
+                </SiteLink>
+              </>
+            )}
+          </nav>
+          {admin && post.source !== 'repo' && (
             <SiteLink site="blog" to={`/admin/edit/${post.slug}`} className="btn btn--outline btn--sm"><Icon name="pen" />Edit</SiteLink>
+          )}
+          {admin && post.source === 'repo' && post.editUrl && (
+            <ExternalLink href={post.editUrl} className="btn btn--outline btn--sm"><Icon name="github" />Edit on GitHub</ExternalLink>
           )}
         </div>
         {post.status !== 'published' && (
@@ -75,6 +95,22 @@ export function ArticlePage() {
           </div>
         ) : (
           <PostBody html={post.contentHtml} />
+        )}
+        {(prev || next) && (
+          <nav aria-label={`More in ${folderName}`} className="folder-nav">
+            {prev ? (
+              <SiteLink site="blog" to={`/${prev.slug}`} className="card card--link">
+                <span className="folder-nav__label">← Previous in {folderName}</span>
+                <span className="folder-nav__title">{prev.title}</span>
+              </SiteLink>
+            ) : <span />}
+            {next && (
+              <SiteLink site="blog" to={`/${next.slug}`} className="card card--link" style={{ textAlign: 'right' }}>
+                <span className="folder-nav__label">Next in {folderName} →</span>
+                <span className="folder-nav__title">{next.title}</span>
+              </SiteLink>
+            )}
+          </nav>
         )}
         <SharePanel url={url} title={post.title} />
         {profile && (

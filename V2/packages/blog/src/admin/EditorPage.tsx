@@ -6,7 +6,7 @@ import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { createLowlight, common } from 'lowlight';
-import { RESERVED_SLUGS, getPost, postExists, readingMinutes, savePost, sitePath, siteUrl, slugify, uploadImage, useDocumentTitle, type Post, type PostStatus, type PostType } from '@pf/core';
+import { RESERVED_SLUGS, isRepoPost, knownFolders, listAllPosts, normalizeFolder, getPost, postExists, readingMinutes, savePost, sitePath, siteUrl, slugify, uploadImage, useDocumentTitle, type Post, type PostStatus, type PostType } from '@pf/core';
 import { Icon, PageLoading, SiteLink, useToast, type IconName } from '@pf/ui';
 import { AdminBar } from './AdminShell';
 import { PublishedDialog } from './PublishedDialog';
@@ -62,6 +62,24 @@ export function EditorPage() {
     };
   }, [slug]);
 
+  if (slug && isRepoPost(slug)) {
+    const repo = initial;
+    return (
+      <>
+        <AdminBar />
+        <main className="admin-main">
+          <div className="empty">
+            <h3>This post lives in the repo</h3>
+            <p>It's a Markdown file under <code>V2/content/blog</code>. Edit the file and push to main to update it.</p>
+            <div style={{ display: 'flex', gap: 8 }}>
+              {repo?.editUrl && <a className="btn btn--primary" href={repo.editUrl} target="_blank" rel="noopener noreferrer">Edit on GitHub</a>}
+              <SiteLink site="blog" to="/admin" className="btn btn--outline">Back to posts</SiteLink>
+            </div>
+          </div>
+        </main>
+      </>
+    );
+  }
   if (missing) {
     return (
       <>
@@ -112,6 +130,10 @@ function PostEditor({ initial }: { initial: Post }) {
   const [preview, setPreview] = useState(false);
   const [visibility, setVisibility] = useState<Exclude<PostStatus, 'draft'>>(initial.status === 'unlisted' ? 'unlisted' : 'published');
   const [tagDraft, setTagDraft] = useState('');
+  const [folderOptions, setFolderOptions] = useState<string[]>([]);
+  useEffect(() => {
+    listAllPosts().then((all) => setFolderOptions(knownFolders(all).map((f) => f.path)), () => {});
+  }, []);
   const [toast, show] = useToast();
   const savedSlug = useRef(initial.slug);
   const savingRef = useRef(false);
@@ -191,7 +213,7 @@ function PostEditor({ initial }: { initial: Post }) {
       }
       const html = editor.getHTML();
       const saved = await savePost(
-        { ...post, title, slug, status, contentHtml: html === '<p></p>' ? '' : html, readMinutes: readingMinutes(html) },
+        { ...post, title, slug, status, folder: normalizeFolder(post.folder ?? ''), contentHtml: html === '<p></p>' ? '' : html, readMinutes: readingMinutes(html) },
         savedSlug.current || undefined,
       );
       const slugChanged = savedSlug.current !== saved.slug;
@@ -360,6 +382,22 @@ function PostEditor({ initial }: { initial: Post }) {
               ))}
               <input id="tag-input" placeholder={post.tags.length ? '' : 'Add tag, press Enter'} value={tagDraft} onChange={(e) => onTagChange(e.target.value)} onKeyDown={onTagKey} onBlur={addTag} />
             </div>
+          </div>
+          <div className="field">
+            <label className="field__label" htmlFor="folder-input">Folder</label>
+            <input
+              id="folder-input"
+              className="input"
+              list="folder-options"
+              placeholder="None — e.g. low-level-design"
+              value={post.folder ?? ''}
+              onChange={(e) => update({ folder: e.target.value.toLowerCase() })}
+              onBlur={() => update({ folder: normalizeFolder(post.folder ?? '') })}
+            />
+            <datalist id="folder-options">
+              {folderOptions.map((f) => <option key={f} value={f} />)}
+            </datalist>
+            <span className="field__hint">Groups related posts. Use “/” for sub-folders, e.g. system-design/caching.</span>
           </div>
           <div className="field">
             <label className="field__label" htmlFor="slug-input">URL</label>

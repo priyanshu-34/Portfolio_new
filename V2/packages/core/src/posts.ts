@@ -13,10 +13,16 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { SITE_ROOT, isFirebaseConfigured } from './env';
-import type { Post } from './types';
+import { repoFolders, repoLoaders, repoPosts } from 'virtual:blog-posts';
+import { buildFolders } from './folders';
+import type { Folder, Post } from './types';
 
 /** Slugs that collide with blog routes. */
-export const RESERVED_SLUGS = ['admin'];
+export const RESERVED_SLUGS = ['admin', 'folders'];
+
+/** Markdown posts committed under content/blog. */
+const repoPublished = () => repoPosts.filter((p) => p.status === 'published');
+const repoBySlug = (slug: string) => repoPosts.find((p) => p.slug === slug);
 
 const postsCol = () => collection(db(), SITE_ROOT, 'posts');
 
@@ -25,6 +31,8 @@ const newestFirst = (a: Post, b: Post) => (b.publishedAt ?? b.updatedAt) - (a.pu
 function toPost(slug: string, data: Record<string, unknown>): Post {
   return {
     slug,
+    source: 'firestore',
+    folder: '',
     type: 'article',
     status: 'draft',
     title: '',
@@ -41,34 +49,64 @@ function toPost(slug: string, data: Record<string, unknown>): Post {
   } as Post;
 }
 
-/** Posts listed on the public Writing page. */
-export async function listPublishedPosts(): Promise<Post[]> {
+async function firestorePublished(): Promise<Post[]> {
   if (!isFirebaseConfigured) return [];
   try {
     const snap = await getDocs(query(postsCol(), where('status', '==', 'published')));
-    return snap.docs.map((d) => toPost(d.id, d.data())).sort(newestFirst);
+    return snap.docs.map((d) => toPost(d.id, d.data()));
   } catch (err) {
-    // Visitors see an empty list rather than an error; the cause is logged.
-    console.warn('[posts] Could not load posts.', err);
+    // Visitors see repo posts rather than an error; the cause is logged.
+    console.warn('[posts] Could not load posts from Firestore.', err);
     return [];
   }
 }
 
-/** Every post including drafts (admin only). */
-export async function listAllPosts(): Promise<Post[]> {
-  const snap = await getDocs(postsCol());
-  return snap.docs.map((d) => toPost(d.id, d.data())).sort((a, b) => b.updatedAt - a.updatedAt);
+/** Posts listed on the public Writing page: repo Markdown + Firestore, newest first. */
+export async function listPublishedPosts(): Promise<Post[]> {
+  const remote = await firestorePublished();
+  const repoSlugs = new Set(repoPosts.map((p) => p.slug));
+  return [...repoPublished(), ...remote.filter((p) => !repoSlugs.has(p.slug))].sort(newestFirst);
 }
 
+/** Folders that contain published posts (plus any described in the repo). */
+export async function listFolders(posts?: Post[]): Promise<Folder[]> {
+  const list = posts ?? (await listPublishedPosts());
+  return buildFolders(list, repoFolders).filter((f) => f.count > 0 || list.some((p) => p.folder?.startsWith(`${f.path}/`)));
+}
+
+/** Folder metadata for the editor's suggestions, including empty repo folders. */
+export function knownFolders(posts: Post[]): Folder[] {
+  return buildFolders(posts, repoFolders);
+}
+
+/** Every post including drafts (admin only): Firestore posts plus repo posts. */
+export async function listAllPosts(): Promise<Post[]> {
+  const snap = await getDocs(postsCol());
+  const remote = snap.docs.map((d) => toPost(d.id, d.data()));
+  return [...repoPosts, ...remote].sort((a, b) => b.updatedAt - a.updatedAt);
+}
+
+/** A post by slug; repo posts win, their HTML is loaded on demand. */
 export async function getPost(slug: string): Promise<Post | null> {
+  const repo = repoBySlug(slug);
+  if (repo) {
+    const html = (await repoLoaders[slug]?.())?.default ?? '';
+    return { ...repo, contentHtml: html };
+  }
   if (!isFirebaseConfigured) return null;
   const snap = await getDoc(doc(postsCol(), slug));
   return snap.exists() ? toPost(snap.id, snap.data()) : null;
 }
 
+/** Whether a slug is taken by a Firestore post or a repo post. */
 export async function postExists(slug: string): Promise<boolean> {
+  if (repoBySlug(slug)) return true;
   const snap = await getDoc(doc(postsCol(), slug));
   return snap.exists();
+}
+
+export function isRepoPost(slug: string): boolean {
+  return Boolean(repoBySlug(slug));
 }
 
 /**
@@ -83,7 +121,10 @@ export async function savePost(post: Post, previousSlug?: string): Promise<Post>
     updatedAt: now,
     publishedAt: post.status === 'draft' ? post.publishedAt : post.publishedAt ?? now,
   };
-  const { slug, ...data } = saved;
+  // Firestore stores only its own fields.
+  const { slug, source: _source, editUrl: _editUrl, ...data } = saved;
+  void _source;
+  void _editUrl;
   if (previousSlug && previousSlug !== slug) {
     const batch = writeBatch(db());
     batch.set(doc(postsCol(), slug), data);

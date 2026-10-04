@@ -10,3 +10,4 @@ export * from './auth';
 export * from './storage';
 export * from './hooks';
 export * from './url';
+export * from './folders';

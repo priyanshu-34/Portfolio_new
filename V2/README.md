@@ -50,13 +50,17 @@ Everything is stored under the Firestore document `sites/portfolio`, so it is is
 
 - `sites/portfolio` — profile, metrics, education
 - `sites/portfolio/{experience,awards,skills,projects}/{id}`
-- `sites/portfolio/posts/{slug}` — posts (the slug is the document id); `status` is `draft | published | unlisted`; `type` is `article | note | medium`
+- `sites/portfolio/posts/{slug}` — posts written in the admin (the slug is the document id); `status` is `draft | published | unlisted`; `type` is `article | note | medium`; `folder` groups posts
 - `sites/portfolio/subscribers/{id}` — newsletter sign-ups
 - Storage `sites/portfolio/uploads/*` — images from the editor
 
 The site paints instantly from the last content the browser saw (or from the bundled resume content in `packages/core/src/seed.ts` on a first visit) and refreshes from Firestore. If Firestore is empty or unreachable it keeps showing the bundled content.
 
 To load the resume content into Firestore: sign in at `/blog/admin` and click **Import starter content** (shown only while Firestore has no portfolio document).
+
+## Writing from Markdown
+
+Posts can also be Markdown files in `content/blog/**` — push to `main` and Netlify publishes them, no Firestore involved. Directories become folders (`content/blog/low-level-design/…` → `/blog/folders/low-level-design`), and `_folder.md` sets a folder's title, description and order. Front matter, images and rules: [content/blog/README.md](content/blog/README.md). The build plugin is `tools/blog-posts-plugin.ts`.
 
 ## Writing (owner only)
 

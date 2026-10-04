@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
+import { blogPosts } from '../../tools/blog-posts-plugin.ts';
 import { fileURLToPath } from 'node:url';
 
 const root = (p: string) => fileURLToPath(new URL(p, import.meta.url));
@@ -19,7 +20,7 @@ export default defineConfig(({ mode }) => {
     return value;
   };
   return {
-    plugins: [react()],
+    plugins: [react(), blogPosts({ dir: root('../../content/blog'), editBase: 'https://github.com/priyanshu-34/Portfolio_new/edit/main/V2/content/blog' })],
     envDir: root('../..'),
     publicDir: root('../../packages/ui/public'),
     define: {

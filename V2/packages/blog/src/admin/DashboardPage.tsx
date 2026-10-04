@@ -9,6 +9,7 @@ type Filter = 'all' | PostStatus | 'medium';
 const STATUS_PILL: Record<PostStatus, string> = { published: 'pill--success', draft: 'pill--attention', unlisted: 'pill--neutral' };
 const STATUS_LABEL: Record<PostStatus, string> = { published: 'Published', draft: 'Draft', unlisted: 'Unlisted' };
 const TYPE_LABEL = { article: 'Article', note: 'Note', medium: 'Medium link' } as const;
+const isRepo = (p: Post) => p.source === 'repo';
 
 export function DashboardPage() {
   const posts = useAsync(listAllPosts);
@@ -113,6 +114,7 @@ export function DashboardPage() {
                 <tr>
                   <th scope="col" style={{ width: '44%' }}>Title</th>
                   <th scope="col">Type</th>
+                  <th scope="col">Folder</th>
                   <th scope="col">Status</th>
                   <th scope="col">Updated</th>
                   <th scope="col"><span className="sr-only">Actions</span></th>
@@ -122,18 +124,27 @@ export function DashboardPage() {
                 {visible.map((post) => (
                   <tr key={post.slug}>
                     <td>
-                      {post.type === 'medium' ? (
+                      {isRepo(post) ? (
+                        <SiteLink site="blog" to={`/${post.slug}`} className="table__title">{post.title}</SiteLink>
+                      ) : post.type === 'medium' ? (
                         <a href={safeUrl(post.externalUrl) || '#'} target="_blank" rel="noopener noreferrer" className="table__title">{post.title}</a>
                       ) : (
                         <SiteLink site="blog" to={`/admin/edit/${post.slug}`} className="table__title">{post.title || 'Untitled'}</SiteLink>
                       )}
                     </td>
-                    <td>{TYPE_LABEL[post.type]}</td>
+                    <td>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                        {TYPE_LABEL[post.type]}
+                        {isRepo(post) && <span className="badge" style={{ border: '1px solid var(--c-text-3)', color: 'var(--c-text-2)' }} title="Markdown file in the repo">Repo</span>}
+                      </span>
+                    </td>
+                    <td>{post.folder || '—'}</td>
                     <td><span className={`pill ${STATUS_PILL[post.status]}`}>{post.type === 'medium' && post.status === 'published' ? 'Listed' : STATUS_LABEL[post.status]}</span></td>
                     <td>{formatDate(post.updatedAt)}</td>
                     <td>
                       <div className="table__actions">
-                        {post.type !== 'medium' && <SiteLink site="blog" to={`/admin/edit/${post.slug}`} className="btn btn--ghost btn--sm">Edit</SiteLink>}
+                        {isRepo(post) && post.editUrl && <a href={post.editUrl} target="_blank" rel="noopener noreferrer" className="btn btn--ghost btn--sm">Edit on GitHub</a>}
+                        {!isRepo(post) && post.type !== 'medium' && <SiteLink site="blog" to={`/admin/edit/${post.slug}`} className="btn btn--ghost btn--sm">Edit</SiteLink>}
                         {post.status !== 'draft' && (
                           <button
                             type="button"
@@ -143,9 +154,11 @@ export function DashboardPage() {
                             Copy link
                           </button>
                         )}
-                        <button type="button" className="btn btn--ghost btn--icon btn--sm" aria-label={`Delete ${post.title}`} onClick={() => remove(post)}>
-                          <Icon name="trash" />
-                        </button>
+                        {!isRepo(post) && (
+                          <button type="button" className="btn btn--ghost btn--icon btn--sm" aria-label={`Delete ${post.title}`} onClick={() => remove(post)}>
+                            <Icon name="trash" />
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>

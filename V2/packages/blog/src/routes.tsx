@@ -3,6 +3,7 @@ import type { RouteObject } from 'react-router-dom';
 import { PageLoading } from '@pf/ui';
 import { BlogPage } from './BlogPage';
 import { ArticlePage } from './ArticlePage';
+import { FolderPage } from './FolderPage';
 
 // The admin (and its rich-text editor) is only downloaded by the owner.
 const SignInPage = lazy(() => import('./admin/SignInPage').then((m) => ({ default: m.SignInPage })));
@@ -22,5 +23,6 @@ export const blogRoutes: RouteObject[] = [
   { path: 'admin', element: admin(<DashboardPage />) },
   { path: 'admin/new', element: admin(<EditorPage />) },
   { path: 'admin/edit/:slug', element: admin(<EditorPage />) },
+  { path: 'folders/*', element: <FolderPage /> },
   { path: ':slug', element: <ArticlePage /> },
 ];

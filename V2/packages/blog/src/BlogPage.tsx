@@ -1,7 +1,8 @@
 import { useMemo, useState, type FormEvent } from 'react';
-import { listPublishedPosts, safeUrl, subscribe, useAsync, useDocumentTitle, usePortfolio, type Post } from '@pf/core';
+import { listFolders, listPublishedPosts, subscribe, useAsync, useDocumentTitle, usePortfolio } from '@pf/core';
 import { EmptyState, ExternalLink, Icon, PageShell, Skeleton, SiteLink } from '@pf/ui';
 import { PostMeta } from './PostMeta';
+import { FolderCard, PostLink, PostRow } from './PostList';
 import './blog.css';
 
 type Filter = 'all' | 'article' | 'note' | 'medium';
@@ -12,16 +13,10 @@ const FILTERS: { key: Filter; label: string }[] = [
   { key: 'medium', label: 'From Medium' },
 ];
 
-function PostLink({ post, className, children }: { post: Post; className?: string; children: React.ReactNode }) {
-  return post.type === 'medium' ? (
-    <ExternalLink href={safeUrl(post.externalUrl) || '#'} className={className}>{children}</ExternalLink>
-  ) : (
-    <SiteLink site="blog" to={`/${post.slug}`} className={className}>{children}</SiteLink>
-  );
-}
-
 export function BlogPage() {
   const posts = useAsync(listPublishedPosts);
+  const folders = useAsync(() => listFolders(posts.data ?? []), [posts.data]);
+  const topFolders = (folders.data ?? []).filter((f) => !f.path.includes('/'));
   const portfolio = usePortfolio();
   const medium = portfolio.data?.data.profile.socials.medium;
   const [filter, setFilter] = useState<Filter>('all');
@@ -108,17 +103,17 @@ export function BlogPage() {
                   </div>
                 </PostLink>
               )}
+              {isDefaultView && topFolders.length > 0 && (
+                <section aria-labelledby="folders-title" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                  <h2 id="folders-title" className="label-caps">Folders</h2>
+                  <div className="folder-grid">
+                    {topFolders.map((f) => <FolderCard key={f.path} folder={f} posts={all} />)}
+                  </div>
+                </section>
+              )}
               <div>
-                {(isDefaultView ? rest : visible).map((post) => (
-                  <article key={post.slug} className="post-row">
-                    <div className="post-row__body">
-                      <PostMeta post={post} />
-                      <h3 className="post-row__title"><PostLink post={post}>{post.title}</PostLink></h3>
-                      {post.subtitle && <p className="muted" style={{ fontSize: 15 }}>{post.subtitle}</p>}
-                    </div>
-                    {post.coverUrl && <img className="post-row__thumb" src={post.coverUrl} alt="" loading="lazy" />}
-                  </article>
-                ))}
+                {isDefaultView && topFolders.length > 0 && rest.length > 0 && <h2 className="label-caps" style={{ marginBottom: 4 }}>All posts</h2>}
+                {(isDefaultView ? rest : visible).map((post) => <PostRow key={post.slug} post={post} folders={folders.data} />)}
               </div>
             </>
           )}
