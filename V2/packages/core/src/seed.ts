@@ -1,0 +1,183 @@
+import type { PortfolioData } from './types';
+
+/**
+ * Initial content, taken from the resume. The site reads Firestore first and
+ * falls back to this when Firestore is empty or unreachable; the admin can
+ * write it to Firestore with one click ("Import starter content").
+ */
+export const seedPortfolio: PortfolioData = {
+  profile: {
+    name: 'Priyanshu Singh',
+    role: 'Backend Engineer',
+    company: 'Contentstack',
+    location: 'Bengaluru, India',
+    headline: 'I build the systems AI agents run on.',
+    summary:
+      'Backend engineer with 3 years building distributed systems, workflow orchestration and AI-agent infrastructure. Currently building AgentOS at Contentstack, owning the core execution services that power 60K+ agent executions a day.',
+    email: 'priya14anshu@gmail.com',
+    resumeUrl: 'https://drive.google.com/file/d/1Vlb8oohrNEDrbQFqblzkTUq2Xm3jhVaJ/view?usp=drive_link',
+    avatarUrl: '/profile.png',
+    openToConnect: true,
+    focus: ['distributed systems', 'workflow orchestration', 'AI-agent infrastructure'],
+    stack: ['TypeScript', 'Node.js', 'gRPC', 'Kafka', 'Redis', 'Mastra'],
+    socials: {
+      github: 'https://github.com/priyanshu-34',
+      linkedin: 'https://www.linkedin.com/in/priyans34/',
+      leetcode: 'https://leetcode.com/u/priyans34/',
+      gfg: 'https://www.geeksforgeeks.org/user/itsaslowball',
+      medium: 'https://medium.com/@priyans34',
+    },
+    metrics: [
+      { value: '60K+', label: 'Agent executions a day on AgentOS, running on services I own' },
+      { value: '~1–2ms', label: 'Request-processing latency after a Redis rate limiter, down from ~4–8ms' },
+      { value: '3 yrs', label: 'Building distributed systems, workflow engines and agent infrastructure' },
+      { value: '2×', label: 'Above & Beyond Awards at Contentstack, 2025 and 2026' },
+    ],
+    education: [
+      {
+        institute: 'JSS Science and Technology University',
+        degree: 'Bachelor of Engineering',
+        location: 'Mysuru, India',
+        period: 'Aug 2020 — May 2024',
+        score: 'CGPA 9.07',
+      },
+    ],
+  },
+  experience: [
+    {
+      id: 'contentstack-ase',
+      company: 'Contentstack',
+      role: 'Associate Software Engineer',
+      period: 'Jul 2024 — Present',
+      location: 'Bengaluru, India',
+      current: true,
+      order: 1,
+      highlights: [
+        'Built and scaled AgentOS, Contentstack’s agent orchestration platform, owning the core execution services that power 60K+ agent executions a day.',
+        'Designed the workflow engine behind the Orchestrator Agent: a plan–execute–replan architecture with dependency-aware DAG scheduling, snapshot-based suspend/resume and abort propagation.',
+        'Owned On-Demand Agents end to end — interactive, goal-driven runs that complete multi-step tool workflows, with tools executing as the user via scoped delegated auth (no account setup).',
+        'Built a distributed Redis-based rate limiter for organisation-level quotas, cutting request-processing latency from ~4–8ms to ~1–2ms with a single pipelined round-trip.',
+        'Refactored the automations Queue Service into an independent microservice, replacing blocking components with asynchronous workflows for scalability, fault isolation and throughput.',
+        'Engineered an MCP client framework for secure integration with remote MCP servers over OAuth, DCR and header-based auth, removing the need for custom tool development.',
+        'Built real-time execution monitoring with Redis and Pusher, giving live visibility into workflow state, tool activity and in-flight agent runs.',
+        'Instrumented observability across services — distributed tracing, structured logging and metrics — reducing time to diagnose production issues.',
+      ],
+      tech: ['TypeScript', 'Node.js', 'NestJS', 'Mastra', 'Hono', 'gRPC', 'MongoDB', 'Redis', 'Kafka'],
+    },
+    {
+      id: 'contentstack-intern',
+      company: 'Contentstack',
+      role: 'Associate Software Engineer Intern',
+      period: 'Jan 2024 — Jul 2024',
+      location: 'Bengaluru, India',
+      current: false,
+      order: 2,
+      highlights: [
+        'Built triggers and actions for the automation workflow engine and enforced server-side validations, reducing manual customer effort and support escalations.',
+        'Wrote unit and end-to-end tests with Jest and Playwright, raising coverage across all workflow paths.',
+      ],
+      tech: ['NestJS', 'TypeScript', 'Jest', 'Playwright'],
+    },
+  ],
+  awards: [
+    {
+      id: 'aab-q1-2026',
+      title: 'Above & Beyond Award, Contentstack',
+      period: 'Q1 2026',
+      description: 'For leading critical AgentOS architecture improvements and securing the platform by resolving major vulnerabilities.',
+      order: 1,
+    },
+    {
+      id: 'aab-q2-2025',
+      title: 'Above & Beyond Award, Contentstack',
+      period: 'Q2 2025',
+      description: 'For developing the Orchestrator Agent, simplifying multi-agent authentication and delivering cross-region support for automation import/export.',
+      order: 2,
+    },
+  ],
+  skills: [
+    { id: 'backend', title: 'Backend & distributed', order: 1, skills: ['Node.js', 'NestJS', 'Express.js', 'gRPC', 'Kafka', 'BullMQ', 'REST', 'SSE'] },
+    { id: 'ai', title: 'AI platforms', order: 2, skills: ['Multi-agent orchestration', 'RAG', 'MCP', 'Mastra', 'LangGraph', 'LangChain', 'AI SDK (OpenAI / Anthropic / Google)'] },
+    { id: 'languages', title: 'Languages', order: 3, skills: ['TypeScript', 'JavaScript', 'Python', 'SQL', 'Golang (basic)'] },
+    { id: 'data', title: 'Data & infra', order: 4, skills: ['MongoDB', 'Redis', 'PostgreSQL', 'MySQL', 'Mongoose', 'Docker', 'Docker Compose', 'Kubernetes (basic)'] },
+  ],
+  projects: [
+    {
+      id: 'developers-marketplace',
+      slug: 'developers-marketplace',
+      name: "Developer's Marketplace",
+      summary:
+        'An event-driven services marketplace on microservices. Kafka runs async workflows, gRPC handles low-latency service calls, and RBAC guards access. Secure bidding and escrow lock funds in-transaction until completion or dispute, with a real-time Redis + WebSockets + BullMQ notification pipeline.',
+      tags: ['NestJS', 'Kafka', 'gRPC', 'Redis', 'WebSockets', 'MongoDB'],
+      github: 'https://github.com/priyanshu-34/Marketplace',
+      featured: true,
+      order: 1,
+      caseStudy: {
+        overview: [
+          'A services marketplace has to coordinate many things at once: bids arriving in real time, money held safely until work is completed or disputed, and different permissions for each user role.',
+          'I built it as a set of NestJS microservices, with Kafka carrying asynchronous workflows, gRPC for low-latency inter-service communication and RBAC-based access control.',
+        ],
+        architecture: [
+          { label: 'Clients', items: ['React web app', 'WebSocket gateway'] },
+          { label: 'NestJS microservices · gRPC between services', items: ['RBAC access control', 'Bidding & escrow', 'Notification pipeline'] },
+          { label: 'Infrastructure', items: ['Kafka', 'Redis + BullMQ', 'MongoDB'] },
+        ],
+        features: [
+          { title: 'Bidding & escrow', body: 'Funds are locked in-transaction when a bid is accepted and released on completion or dispute.' },
+          { title: 'Real-time updates', body: 'A Redis + WebSockets + BullMQ notification pipeline pushes bid and order events as they happen.' },
+          { title: 'Role-based access', body: 'Role-based access control enforced across services.' },
+          { title: 'Async workflows', body: 'Kafka decouples long-running flows from requests; gRPC keeps synchronous calls fast and typed.' },
+        ],
+        learnings: [],
+      },
+    },
+    {
+      id: 'hotel-com',
+      slug: 'hotel-com',
+      name: 'Hotel.com',
+      summary: 'Hotel booking with advanced search, Stripe payments and Cloudinary media. Async processing, indexing and query tuning keep APIs steady under heavy traffic.',
+      tags: ['NestJS', 'React Query', 'MongoDB', 'Stripe'],
+      github: 'https://github.com/priyanshu-34/Hotel-Booking',
+      demo: 'https://hotel-booking-uvov.onrender.com',
+      image: '/hotel.png',
+      featured: false,
+      order: 2,
+    },
+    {
+      id: 'serverless-medium',
+      slug: 'serverless-medium',
+      name: 'Serverless Medium',
+      summary: 'A blogging platform on Cloudflare Workers and Hono, with Prisma Accelerate pooling, type-safe shared schemas via an NPM package, Zod validation and access/refresh-token auth.',
+      tags: ['Cloudflare Workers', 'Hono', 'Prisma', 'PostgreSQL'],
+      github: 'https://github.com/priyanshu-34/Medium-serverless',
+      demo: 'https://medium-serverless.onrender.com/',
+      image: '/medium.png',
+      featured: false,
+      order: 3,
+    },
+    {
+      id: 'colcomm',
+      slug: 'colcomm',
+      name: 'ColComm',
+      summary: 'A chat platform matching mentees with mentors by expertise. AI moderation with FastText and Random Forest filters hate speech and abuse at 94% accuracy.',
+      tags: ['Node.js', 'Socket.IO', 'MongoDB', 'Machine Learning'],
+      github: 'https://github.com/priyanshu-34/ColComm',
+      demo: 'https://colcomm.onrender.com/',
+      image: '/colcomm.jpg',
+      featured: false,
+      order: 4,
+    },
+    {
+      id: 'impact-ngo',
+      slug: 'impact-ngo',
+      name: 'ImpactNGO',
+      summary: 'Connects restaurants, stores and people who have surplus food, clothes and goods with NGOs that distribute them to those in need.',
+      tags: ['React.js', 'Firebase'],
+      github: 'https://github.com/rajat1912/ImpactTogether',
+      demo: 'https://impact-c3d0d.web.app/',
+      image: '/impact.png',
+      featured: false,
+      order: 5,
+    },
+  ],
+};

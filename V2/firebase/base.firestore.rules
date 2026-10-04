@@ -1,0 +1,39 @@
+// Deploy: firebase use interview-dsa && firebase deploy --only firestore:rules
+// Or paste this file in Firebase Console → Firestore → Rules → Publish (required for "Mark as done" to save)
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    // Explicit rules for user subcollections (notes, activity, bookmarks)
+    match /users/{userId}/notes/{noteId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    match /users/{userId}/activity/{dateId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    match /users/{userId}/bookmarks/{docId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    match /users/{userId}/stats/{docId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    match /users/{userId}/_check/{docId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    match /users/{userId}/prefs/{docId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    // Questions: read by anyone; write only by admin email
+    match /questions/{qId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null && request.auth.token.email == 'priyanshu.sjce@gmail.com';
+    }
+    // Config (prompts, custom topics): read by all so custom topic names show app-wide; write admin only
+    match /config/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.email == 'priyanshu.sjce@gmail.com';
+    }
+  }
+}

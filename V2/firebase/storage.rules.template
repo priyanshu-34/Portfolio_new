@@ -1,0 +1,20 @@
+rules_version = '2';
+
+// Images uploaded from the writing editor.
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /sites/portfolio/uploads/{file} {
+      function isOwner() {
+        return request.auth != null
+          && request.auth.token.email_verified == true
+          && request.auth.token.email.lower() in [__ADMIN_EMAILS__];
+      }
+      allow read: if true;
+      // Raster images only: SVG can carry script on a public bucket.
+      allow create, update: if isOwner()
+        && request.resource.size < 8 * 1024 * 1024
+        && request.resource.contentType.matches('image/(png|jpeg|gif|webp|avif)');
+      allow delete: if isOwner();
+    }
+  }
+}

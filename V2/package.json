@@ -1,0 +1,30 @@
+{
+  "name": "portfolio-v2",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @pf/web",
+    "build": "npm run build -w @pf/web",
+    "preview": "npm run preview -w @pf/web",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "dev:blog": "npm run dev -w @pf/blog-app",
+    "build:web": "npm run build -w @pf/web",
+    "build:blog": "npm run build -w @pf/blog-app",
+    "rules": "node scripts/gen-rules.mjs",
+    "deploy:rules": "npm run rules && firebase deploy --only firestore:rules",
+    "test": "vitest run",
+    "deploy:storage-rules": "npm run rules && firebase deploy --only storage"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2",
+    "vitest": "^5.0.3"
+  }
+}
