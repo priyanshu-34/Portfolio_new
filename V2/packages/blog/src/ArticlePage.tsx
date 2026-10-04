@@ -82,7 +82,7 @@ export function ArticlePage() {
             <img src={profile.avatarUrl} alt="" style={{ width: 56, height: 56, borderRadius: 999, objectFit: 'cover' }} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               <strong style={{ fontWeight: 600 }}>Written by {profile.name}</strong>
-              <span className="muted" style={{ fontSize: 15 }}>{profile.role} at {profile.company}. Writes about {profile.focus.join(', ')}.</span>
+              <span className="muted" style={{ fontSize: 15 }}>{profile.role} at {profile.company}. Writes about {profile.focus.slice(0, 3).join(', ')}.</span>
               <SiteLink site="portfolio" to="/" style={{ fontSize: 14, fontWeight: 600, padding: '8px 0' }}>About me</SiteLink>
             </div>
           </div>

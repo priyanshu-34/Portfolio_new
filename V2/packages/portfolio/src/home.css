@@ -78,3 +78,5 @@
 }
 
 .home-projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 24px; }
+.award__link { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; padding: 8px 0 0; margin-top: auto; }
+.award { height: 100%; }

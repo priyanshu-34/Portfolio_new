@@ -18,8 +18,19 @@ export const seedPortfolio: PortfolioData = {
     resumeUrl: 'https://drive.google.com/file/d/1Vlb8oohrNEDrbQFqblzkTUq2Xm3jhVaJ/view?usp=drive_link',
     avatarUrl: '/profile.png',
     openToConnect: true,
-    focus: ['distributed systems', 'workflow orchestration', 'AI-agent infrastructure'],
-    stack: ['TypeScript', 'Node.js', 'gRPC', 'Kafka', 'Redis', 'Mastra'],
+    focus: [
+      'scalable backend systems',
+      'distributed systems',
+      'agentic AI & multi-agent orchestration',
+      'workflow orchestration',
+      'event-driven architecture',
+    ],
+    stack: {
+      languages: ['TypeScript', 'Go', 'Python'],
+      backend: ['Node.js', 'NestJS', 'gRPC', 'Kafka', 'Redis'],
+      ai: ['LangChain', 'LangGraph', 'RAG', 'Mastra', 'MCP'],
+    },
+    impact: { agentRunsPerDay: '60K+', experience: '3 yrs' },
     socials: {
       github: 'https://github.com/priyanshu-34',
       linkedin: 'https://www.linkedin.com/in/priyans34/',
@@ -85,6 +96,7 @@ export const seedPortfolio: PortfolioData = {
       title: 'Above & Beyond Award, Contentstack',
       period: 'Q1 2026',
       description: 'For leading critical AgentOS architecture improvements and securing the platform by resolving major vulnerabilities.',
+      url: 'https://lnkd.in/p/gvzUcsFV',
       order: 1,
     },
     {
@@ -92,13 +104,14 @@ export const seedPortfolio: PortfolioData = {
       title: 'Above & Beyond Award, Contentstack',
       period: 'Q2 2025',
       description: 'For developing the Orchestrator Agent, simplifying multi-agent authentication and delivering cross-region support for automation import/export.',
+      url: 'https://lnkd.in/p/g9cpR3tE',
       order: 2,
     },
   ],
   skills: [
     { id: 'backend', title: 'Backend & distributed', order: 1, skills: ['Node.js', 'NestJS', 'Express.js', 'gRPC', 'Kafka', 'BullMQ', 'REST', 'SSE'] },
-    { id: 'ai', title: 'AI platforms', order: 2, skills: ['Multi-agent orchestration', 'RAG', 'MCP', 'Mastra', 'LangGraph', 'LangChain', 'AI SDK (OpenAI / Anthropic / Google)'] },
-    { id: 'languages', title: 'Languages', order: 3, skills: ['TypeScript', 'JavaScript', 'Python', 'SQL', 'Golang (basic)'] },
+    { id: 'ai', title: 'AI platforms', order: 2, skills: ['Agentic AI', 'Multi-agent orchestration', 'RAG', 'MCP', 'Mastra', 'LangGraph', 'LangChain', 'AI SDK (OpenAI / Anthropic / Google)'] },
+    { id: 'languages', title: 'Languages', order: 3, skills: ['TypeScript', 'JavaScript', 'Go', 'Python', 'SQL'] },
     { id: 'data', title: 'Data & infra', order: 4, skills: ['MongoDB', 'Redis', 'PostgreSQL', 'MySQL', 'Mongoose', 'Docker', 'Docker Compose', 'Kubernetes (basic)'] },
   ],
   projects: [

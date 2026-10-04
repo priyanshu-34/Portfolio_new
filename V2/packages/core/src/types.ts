@@ -31,7 +31,10 @@ export interface Profile {
   avatarUrl: string;
   openToConnect: boolean;
   focus: string[];
-  stack: string[];
+  /** Grouped stack shown in the hero code card, e.g. { languages: [...], ai: [...] }. */
+  stack: Record<string, string[]>;
+  /** Headline numbers shown in the hero code card, e.g. { agentRunsPerDay: '60K+' }. */
+  impact?: Record<string, string>;
   socials: SocialLinks;
   metrics: Metric[];
   education: Education[];
@@ -54,6 +57,8 @@ export interface Award {
   title: string;
   period: string;
   description: string;
+  /** Link to the announcement (e.g. a LinkedIn post). */
+  url?: string;
   order: number;
 }
 

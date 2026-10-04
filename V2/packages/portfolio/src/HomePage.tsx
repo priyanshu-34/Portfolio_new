@@ -1,4 +1,4 @@
-import { listPublishedPosts, safeUrl, useAsync, useDocumentTitle, usePortfolio, formatDate, type Post } from '@pf/core';
+import { listPublishedPosts, safeUrl, useAsync, useDocumentTitle, usePortfolio, formatDate, type Post, type Profile } from '@pf/core';
 import { ExternalLink, Icon, PageShell, SectionHead, SiteLink, Tags } from '@pf/ui';
 import { ProjectCard } from '@pf/projects';
 import './home.css';
@@ -61,21 +61,7 @@ export function HomePage() {
             </div>
             <div className="code-card">
               <div className="code-card__bar"><span>engineer.ts</span><span>TS</span></div>
-              <pre>
-                <span className="k">export const</span> engineer = {'{'}{'\n'}
-                {'  '}name: <span className="s">"{profile.name}"</span>,{'\n'}
-                {'  '}role: <span className="s">"{profile.role}"</span>,{'\n'}
-                {'  '}building: <span className="s">"AgentOS @ {profile.company}"</span>,{'\n'}
-                {'  '}focus: [{'\n'}
-                {profile.focus.map((f) => (
-                  <span key={f}>{'    '}<span className="s">"{f}"</span>,{'\n'}</span>
-                ))}
-                {'  '}],{'\n'}
-                {'  '}stack: [{profile.stack.map((s, i) => (
-                  <span key={s}><span className="s">"{s}"</span>{i < profile.stack.length - 1 ? ', ' : ''}</span>
-                ))}],{'\n'}
-                {'}'};
-              </pre>
+              <EngineerCode profile={profile} />
             </div>
           </div>
         </div>
@@ -130,6 +116,9 @@ export function HomePage() {
                 </div>
                 <h3 style={{ fontSize: 20, fontWeight: 600 }}>{a.title}</h3>
                 <p className="muted">{a.description}</p>
+                {safeUrl(a.url) && (
+                  <ExternalLink href={safeUrl(a.url)} className="award__link">View on LinkedIn <Icon name="external" size={14} /></ExternalLink>
+                )}
               </article>
             ))}
           </div>
@@ -237,5 +226,38 @@ function HomePostCard({ post }: { post: Post }) {
     <ExternalLink href={safeUrl(post.externalUrl) || '#'} className="card card--link" style={style}>{body}</ExternalLink>
   ) : (
     <SiteLink site="blog" to={`/${post.slug}`} className="card card--link" style={style}>{body}</SiteLink>
+  );
+}
+
+const str = (v: string) => <span className="s">"{v}"</span>;
+const list = (items: string[]) => items.map((it, i) => <span key={it}>{str(it)}{i < items.length - 1 ? ', ' : ''}</span>);
+
+/** The hero code card, rendered from profile data as a TypeScript object. */
+function EngineerCode({ profile }: { profile: Profile }) {
+  // Older content stored the stack as a flat list.
+  const stack: Record<string, string[]> = Array.isArray(profile.stack) ? { core: profile.stack as unknown as string[] } : profile.stack ?? {};
+  return (
+    <pre>
+      <span className="k">export const</span> engineer = {'{'}{'\n'}
+      {'  '}name: {str(profile.name)},{'\n'}
+      {'  '}role: {str(profile.role)},{'\n'}
+      {'  '}building: {str(`AgentOS @ ${profile.company}`)},{'\n'}
+      {'  '}focus: [{'\n'}
+      {profile.focus.map((f) => <span key={f}>{'    '}{str(f)},{'\n'}</span>)}
+      {'  '}],{'\n'}
+      {'  '}stack: {'{'}{'\n'}
+      {Object.entries(stack).map(([group, items]) => (
+        <span key={group}>{'    '}{group}: [{list(items)}],{'\n'}</span>
+      ))}
+      {'  '}{'}'},{'\n'}
+      {profile.impact && Object.keys(profile.impact).length > 0 && (
+        <>
+          {'  '}impact: {'{'} {Object.entries(profile.impact).map(([k, v], i, all) => (
+            <span key={k}>{k}: {str(v)}{i < all.length - 1 ? ', ' : ''}</span>
+          ))} {'}'},{'\n'}
+        </>
+      )}
+      {'}'};
+    </pre>
   );
 }

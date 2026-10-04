@@ -35,7 +35,7 @@ export function DashboardPage() {
   }
 
   async function seed() {
-    if (!window.confirm('Write the bundled resume content to Firestore?')) return;
+    if (!window.confirm('Replace the portfolio content in Firestore with the version in the code?')) return;
     setSeeding(true);
     try {
       await writePortfolio();
@@ -63,6 +63,13 @@ export function DashboardPage() {
       <main className="admin-main">
         {portfolio.data.source === 'fallback' && (
           <p className="notice notice--warn">Couldn't reach Firestore for portfolio content; visitors see the last saved copy.</p>
+        )}
+        {portfolio.data.source === 'firestore' && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <button type="button" className="btn btn--ghost btn--sm" disabled={seeding} onClick={seed} title="Overwrite the portfolio content in Firestore with the version in the code (packages/core/src/seed.ts)">
+              <Icon name="refresh" />{seeding ? 'Syncing…' : 'Sync portfolio content from code'}
+            </button>
+          </div>
         )}
         {portfolio.data.source === 'seed' && !portfolio.loading && (
           <div className="notice notice--info" style={{ alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' }}>
