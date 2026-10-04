@@ -76,3 +76,5 @@
   .contact__actions { flex: 1 1 100%; }
   .contact__email { font-size: 14px; }
 }
+
+.home-projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 24px; }

@@ -1,6 +1,6 @@
 import { listPublishedPosts, safeUrl, useAsync, useDocumentTitle, usePortfolio, formatDate, type Post } from '@pf/core';
 import { ExternalLink, Icon, PageShell, SectionHead, SiteLink, Tags } from '@pf/ui';
-import { ProjectCard, FeaturedProject } from '@pf/projects';
+import { ProjectCard } from '@pf/projects';
 import './home.css';
 
 export function HomePage() {
@@ -10,8 +10,8 @@ export function HomePage() {
   useDocumentTitle(p ? `${p.name} — ${p.role}` : undefined);
 
   const { profile, experience, awards, skills, projects } = data.data;
-  const featured = projects.find((x) => x.featured) ?? projects[0];
-  const others = projects.filter((x) => x !== featured).slice(0, 4);
+  // Home shows two projects: featured ones first, then by order.
+  const homeProjects = [...projects].sort((a, b) => Number(b.featured) - Number(a.featured) || a.order - b.order).slice(0, 2);
   const latest = (posts.data ?? []).slice(0, 3);
 
   return (
@@ -142,17 +142,10 @@ export function HomePage() {
           eyebrow="03 — Projects"
           title="Selected projects"
           id="projects-title"
-          action={
-            <SiteLink site="projects" to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 600, padding: '12px 0' }}>
-              All projects <Icon name="arrowRight" />
-            </SiteLink>
-          }
+          action={<SiteLink site="projects" to="/" className="btn btn--outline">All {projects.length} projects <Icon name="arrowRight" /></SiteLink>}
         />
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-          {featured && <FeaturedProject project={featured} />}
-          <div className="project-grid">
-            {others.map((pr) => <ProjectCard key={pr.id} project={pr} />)}
-          </div>
+        <div className="home-projects">
+          {homeProjects.map((pr) => <ProjectCard key={pr.id} project={pr} showBadge />)}
         </div>
       </section>
 

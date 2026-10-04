@@ -16,7 +16,7 @@ function StackDiagram({ tags, compact }: { tags: string[]; compact?: boolean }) 
   );
 }
 
-export function ProjectCard({ project }: { project: Project }) {
+export function ProjectCard({ project, showBadge }: { project: Project; showBadge?: boolean }) {
   return (
     <article className="card" style={{ display: 'flex', flexDirection: 'column' }}>
       {project.image ? (
@@ -25,6 +25,12 @@ export function ProjectCard({ project }: { project: Project }) {
         <div className="project-card__placeholder"><StackDiagram tags={project.tags} compact /></div>
       )}
       <div className="project-card__body">
+        {showBadge && (project.featured || project.caseStudy) && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            {project.featured && <span className="badge badge--primary">Featured</span>}
+            {project.caseStudy && <span className="muted" style={{ fontSize: 13 }}>Case study</span>}
+          </div>
+        )}
         <h3 className="project-card__title">{project.name}</h3>
         <p className="muted" style={{ fontSize: 15 }}>{project.summary}</p>
         <Tags items={project.tags.slice(0, 5)} />
