@@ -7,7 +7,7 @@ tags: [ai-agents, security, prompt-injection, typescript, open-source]
 
 AI agents are moving from *answering questions* to *doing things*: sending email, calling APIs, writing files, browsing. Every tool an agent gets is also a new way for someone else to cause damage through it.
 
-Today I'm releasing **[agent-shield](/projects/agent-shield)** — an open-source TypeScript library that stops agents from being tricked by hidden instructions in web pages, emails and files.
+Today I'm releasing **[agent-shield](/projects/agent-shield)** — an open-source (MIT) TypeScript library that stops agents from being tricked by hidden instructions in web pages, emails and files.
 
 ```bash
 npm install @priyans34/agent-shield
@@ -29,7 +29,7 @@ To a model, everything is just text. It can't reliably tell **instructions from 
 - the user never sees the attack, and
 - the damage happens through the agent's **tools**.
 
-Prompt injection sits at the top of the OWASP Top 10 for LLM applications, and yet there wasn't a simple, drop-in library a developer could add to an agent.
+Prompt injection sits at the top of the OWASP Top 10 for LLM applications, yet most defenses only scan text. I couldn't find a small, drop-in TypeScript library that guards what the agent is allowed to **do**.
 
 ## Why a better prompt doesn't fix it
 
@@ -47,7 +47,7 @@ agent-shield wraps your agent's tools and checks both directions.
 - removes invisible unicode, including "tag" characters used to smuggle hidden messages
 - decodes base64, hex and URL-encoded text and scans that too
 - flags common attack phrases ("ignore previous instructions", fake `system:` lines, "don't tell the user"…)
-- optionally runs a small **local classifier** that catches reworded attacks
+- optionally runs a small **local classifier** that catches reworded attacks — off unless you pass one (`npm install @huggingface/transformers`; the ~268 MB model downloads once and runs on your machine)
 - wraps the result as `<untrusted source="tool:fetch_page">…</untrusted>` so the model treats it as data
 
 **Check Out** checks every tool call before it runs, and does one of three things:
@@ -94,7 +94,7 @@ tools:
     risk: blocked
 ```
 
-On top of your rules, every tool gets a secret check (API keys, tokens and card numbers in arguments are blocked), a data-in-URL check (no smuggling data out through a simple GET), and a lockdown after three blocked calls in one conversation.
+On top of your rules, every tool gets a secret check (API keys, tokens and card numbers in arguments are blocked), a data-in-URL check (no smuggling data out through a simple GET), and a lockdown after three calls blocked by rules in one conversation.
 
 ### Taint: remembering what the agent has read
 
@@ -113,6 +113,7 @@ import { shieldTools } from '@priyans34/agent-shield/langchain';
 
 const shield = createShield({
   config: './shield.yaml',
+  // askUser is your own UI or Slack prompt
   onApproval: async (req) => ((await askUser(req.tool, req.reasons)) ? 'allow' : 'block'),
 });
 
@@ -124,13 +125,15 @@ There's a Mastra adapter too, and a core API for everything else — including c
 
 ## Does it work? The honest numbers
 
-I scored it with all settings frozen first, mostly on content it was never tuned on: 80 new hand-written items and 240 emails from Microsoft's LLMail-Inject challenge, plus eight agent scenarios driven by a model that obeys *every* instruction it reads — the worst case.
+I scored it with all settings frozen first, mostly on content it was never tuned on: 80 new hand-written items and 240 emails from Microsoft's LLMail-Inject challenge, plus 21 agent scenarios across eight use cases, driven by a model that obeys *every* instruction it reads — the worst case.
 
 | | Result |
 | --- | --- |
 | Attacks that worked without the shield | 13/13 |
 | **Attacks stopped with the shield** | **12/13** |
 | **Normal tasks still completed** | **8/8** (5 needed one human approval) |
+
+This is a worst case, not a real-model attack success rate — I haven't measured that yet.
 
 The one miss is an attack that only changes the answer *text* — "tell the customer to visit scam-site.com". No tool is involved, so Check Out can't stop it. That's a real limit of this design, and I'd rather say so than hide it.
 
@@ -143,11 +146,18 @@ On content detection alone:
 
 What I took from this:
 
-- **Check Out is the real protection.** It stopped every tool-based attack, even when the model was completely fooled and Check In flagged nothing.
+- **Check Out is the real protection.** It stopped every tool-based attack, even when the model was completely fooled and Check In flagged nothing — as long as third-party tool descriptions are marked `untrusted`.
 - **The classifier catches almost everything but over-flags** — about one in seven normal emails. That's why the default only *labels* flagged content instead of deleting it.
 - **Benchmarks find real bugs.** They showed that a poisoned description on a third-party tool could make the agent email an *allowed* colleague with no approval. That's why MCP tools can now be marked `description: untrusted`.
 
-Check Out adds effectively nothing to a tool call (0.0 ms at p50 and p95). The classifier is slower — about 172 ms at p95 — so use it where a little delay is fine, or rely on phrase rules plus Check Out.
+Check Out adds effectively nothing to a tool call (0.0 ms at p50 and p95). The classifier is slower — about 170–250 ms at p95, depending on the run — so use it where a little delay is fine, or rely on phrase rules plus Check Out.
+
+## Known limits
+
+- Attacks that only change the answer text aren't blocked (see above).
+- The output check removes images and markdown links that leak data, but not plain URLs.
+- What the agent has read is remembered in memory, so a paused LangGraph run must resume in the same process.
+- The phrase rules are English-only; the classifier covers other languages.
 
 ## What's next
 
