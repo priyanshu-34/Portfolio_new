@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="328" viewBox="0 0 600 328" role="img" aria-label="The model chooses; your code runs the tool" font-family="Inter, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13">
+<rect width="600" height="328" fill="#ffffff"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#a9b6cb"/></marker></defs>
+<text x="24" y="30" font-size="15" font-weight="600" fill="#212121">The model chooses; your code runs the tool</text>
+<g fill="none" stroke="#a9b6cb" stroke-width="1.25"><path d="M104 106V146" marker-end="url(#arrow)"/><path d="M184 170H220" marker-end="url(#arrow)"/><path d="M348 170H384" marker-end="url(#arrow)"/><path d="M284 210V256" marker-end="url(#arrow)"/><path d="M194 280H104V194" marker-end="url(#arrow)"/></g>
+<rect x="24" y="62" width="160" height="44" rx="8" fill="#ffffff" stroke="#a9b6cb" stroke-width="1.25"/><text x="104" y="88" text-anchor="middle" fill="#212121">User asks</text>
+<rect x="24" y="146" width="160" height="48" rx="8" fill="#efedfc" stroke="#6c5ce7" stroke-width="2"/><text x="104" y="174" text-anchor="middle" fill="#212121" font-weight="600">Model decides</text>
+<polygon points="220,170 284,130 348,170 284,210" fill="#ffffff" stroke="#a9b6cb" stroke-width="1.25"/><text x="284" y="174" text-anchor="middle" fill="#212121">Tool needed?</text>
+<rect x="384" y="146" width="160" height="48" rx="8" fill="#ffffff" stroke="#a9b6cb" stroke-width="1.25"/><text x="464" y="174" text-anchor="middle" fill="#212121">Final answer</text>
+<rect x="194" y="256" width="180" height="48" rx="8" fill="#ffffff" stroke="#a9b6cb" stroke-width="1.25"/><text x="284" y="284" text-anchor="middle" fill="#212121">Code runs the tool</text>
+<text x="366" y="162" text-anchor="middle" fill="#475161" font-size="11.5">no</text><text x="294" y="238" text-anchor="start" fill="#475161" font-size="11.5">yes: a tool call</text><text x="112" y="240" text-anchor="start" fill="#475161" font-size="11.5">result goes back</text>
+</svg>
